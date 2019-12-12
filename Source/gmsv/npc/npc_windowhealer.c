@@ -143,7 +143,13 @@ static void NPC_WindowHealer_selectWindow( int meindex, int toindex, int num)
 	switch( num){
 	  case 0:
   		/*--選択画面--*/
-			);
+	  sprintf(token,
+		  " �@�@�@哎呀！你受傷了嗎？�@ "
+		  "\n\n �@�@�@�@�@�@＜ 耐久力回復＞�@�@�@�@�@ "
+		  "\n �@�@�@�@�@�@＜  氣力回復  ＞�@�@�@�@�@ "
+		  "\n �@�@�@�@ ＜ 耐久力.氣力回復 ＞�@�@ "
+		  "\n\n �@�@�@�@�@＜寵物回復(免費)＞�@�@�@�@ "
+	  );
 
 	  	buttontype=WINDOW_BUTTONTYPE_CANCEL;
 	  	windowtype=WINDOW_MESSAGETYPE_SELECT;
@@ -155,8 +161,13 @@ static void NPC_WindowHealer_selectWindow( int meindex, int toindex, int num)
 		if( CHAR_getInt(toindex,CHAR_HP) ==CHAR_getWorkInt( toindex, CHAR_WORKMAXHP)){
 			if(NPC_PetHealerCheck(toindex)==FALSE){
 				sprintf(token,
+				"�@�@�@�@�@�@ ＜�@耐久力回復�@＞"
+				"\n\n\n\n�@�@�@�@似乎沒有必要回復唷！�@");
 		  	}else{
 		  		sprintf(token,
+				"�@�@�@�@�@�@ ＜�@耐久力回復�@＞"
+				"\n\n�@�@�@�@      似乎沒有必要回復唷！�@"
+					  "\n\n�@�@�@因為寵物好像也受傷了！"
 					  "\n                            先幫他回復吧！");
 		  	
 		  		NPC_WindowHealerAllHeal(toindex,0 );
@@ -166,128 +177,176 @@ static void NPC_WindowHealer_selectWindow( int meindex, int toindex, int num)
 		  	windowno=CHAR_WINDOWTYPE_WINDOWHEALER_HPMSG; 
 			break;
 		}else if(NPC_WindowHealerLevelCheck(meindex,toindex)==TRUE){
+			sprintf(token,
+					"�@�@�@�@�@�@ ＜�@耐久力回復�@＞"
+					"\n\n\n�@�@�@�@�@�@�@是要回復耐久力沒錯吧！�@�@�@ "
+					"\n\n�@現在的等級可以免費幫你回復唷！");
 		
 		}else{
 			int gold;
 			gold=NPC_WindowCostCheck(meindex,toindex);
+			sprintf(token,
+				"�@�@�@�@�@�@ ＜�@耐久力回復�@＞"
+				"\n\n\n�@�@�@�@�@�@�@是要回復耐久力沒錯吧！�@�@�@ "
+				 "\n\n�@�@�@�@�@收您%d的STONE 。"
 				 ,gold);
 		}
 
 	  	buttontype=WINDOW_BUTTONTYPE_YESNO;
 	  	windowno=CHAR_WINDOWTYPE_WINDOWHEALER_HPMSG; 
 	  	break;
-
 	  case 2:
-		if( CHAR_getInt(toindex,CHAR_MP) ==CHAR_getWorkInt( toindex, CHAR_WORKMAXMP)){
-			if(NPC_PetHealerCheck(toindex)==FALSE){
-			}else{
-					  "\n                            先幫他回復吧！");
-				NPC_WindowHealerAllHeal(toindex,0 );
-			}
-		  	buttontype=WINDOW_BUTTONTYPE_OK;
-		  	windowno=CHAR_WINDOWTYPE_WINDOWHEALER_SPIRITMSG; 
-			break;
-		}
+	  if (CHAR_getInt(toindex, CHAR_MP) == CHAR_getWorkInt(toindex, CHAR_WORKMAXMP)) {
+		  if (NPC_PetHealerCheck(toindex) == FALSE) {
+			  sprintf(token, "�@�@�@�@�@�@  ＜�@氣力回復�@＞"
+				  "\n\n\n\n�@�@�@�@似乎沒有必要回復唷！�@");
+		  }
+		  else {
+			  sprintf(token, "�@�@�@�@�@�@  ＜�@氣力回復�@＞"
+				  "\n\n�@�@�@�@      似乎沒有必要回復唷！�@"
+				  "\n\n�@�@�@因為寵物好像也受傷了！"
+				  "\n                            先幫他回復吧！");
+			  NPC_WindowHealerAllHeal(toindex, 0);
+		  }
+		  buttontype = WINDOW_BUTTONTYPE_OK;
+		  windowno = CHAR_WINDOWTYPE_WINDOWHEALER_SPIRITMSG;
+		  break;
+	  }
 
-		if(NPC_WindowHealerLevelCheck(meindex,toindex)==TRUE){
-					  "\n\n 現在的等級可以免費幫你回復唷！");
-		}else{
-			int cost;
-			cost=NPC_WindowCostCheckMp(meindex,toindex);
-					cost);
-		}
-	  	buttontype=WINDOW_BUTTONTYPE_YESNO;
-	  	windowno=CHAR_WINDOWTYPE_WINDOWHEALER_SPIRITMSG; 
-	  	break;
+	  if (NPC_WindowHealerLevelCheck(meindex, toindex) == TRUE) {
+		  sprintf(token, "�@�@�@�@�@�@  ＜ 氣力回復＞"
+			  "\n\n�@�@�@�@�@�@�@是要回復氣力沒錯吧！�@�@�@�@ "
+			  "\n\n 現在的等級可以免費幫你回復唷！");
+	  }
+	  else {
+		  int cost;
+		  cost = NPC_WindowCostCheckMp(meindex, toindex);
+		  sprintf(token, "�@�@�@�@�@�@  ＜ 氣力回復＞"
+			  "\n\n\n�@�@�@�@�@�@�@是要回復氣力沒錯吧！ "
+			  "\n\n�@�@�@�@收您%d的STONE 。",
+			  cost);
+	  }
+	  buttontype = WINDOW_BUTTONTYPE_YESNO;
+	  windowno = CHAR_WINDOWTYPE_WINDOWHEALER_SPIRITMSG;
+	  break;
 
 
 	  case 3:
+	  sprintf(token, "\n�@�@�@�@�@�@＜耐久力已回復＞"
+		  "\n�@�@  ＜寵物也已回復一般狀態＞"
+		  "\n\n\n�@�@�@�@�@  這樣子就沒問題了！�@�@�@�@");
 
-		/*--耐久力のみ回復させる--*/
-	  	NPC_WindowHealerAllHeal( toindex ,1 );
-	  	buttontype=WINDOW_BUTTONTYPE_OK;
-	  	windowno=CHAR_WINDOWTYPE_WINDOWHEALER_OKHPMSG; 
-	  	break;
+	  /*--覲菁恘及心莢汊今六月--*/
+	  NPC_WindowHealerAllHeal(toindex, 1);
+	  buttontype = WINDOW_BUTTONTYPE_OK;
+	  windowno = CHAR_WINDOWTYPE_WINDOWHEALER_OKHPMSG;
+	  break;
 
 
 	  case 4:
-		/*--気力のみ回復させる---*/
-	  	NPC_WindowHealerAllHeal( toindex ,2 );
-	 	buttontype=WINDOW_BUTTONTYPE_OK;
-	  	windowno=CHAR_WINDOWTYPE_WINDOWHEALER_OKSPIRITMSG; 
-	  	break;
+	  sprintf(token, "\n�@�@�@�@�@�@＜氣力已回復＞"
+		  "\n�@�@ ＜寵物也已回復一般狀態＞"
+		  "\n\n\n�@�@�@�@�@ 這樣子就沒問題了！ �@�@�@");
+	  /*--竣恘及心莢汊今六月---*/
+	  NPC_WindowHealerAllHeal(toindex, 2);
+	  buttontype = WINDOW_BUTTONTYPE_OK;
+	  windowno = CHAR_WINDOWTYPE_WINDOWHEALER_OKSPIRITMSG;
+	  break;
 
 
 	  case 6:
-		{
-			int cost=0;
+	  {
+		  int cost = 0;
 
-			if(CHAR_getInt(toindex,CHAR_HP) < CHAR_getWorkInt( toindex, CHAR_WORKMAXHP))
-			{
-				cost+=NPC_WindowCostCheck(meindex,toindex);
-			}
+		  if (CHAR_getInt(toindex, CHAR_HP) < CHAR_getWorkInt(toindex, CHAR_WORKMAXHP))
+		  {
+			  cost += NPC_WindowCostCheck(meindex, toindex);
+		  }
 
-			if( CHAR_getInt(toindex,CHAR_MP) < CHAR_getWorkInt( toindex, CHAR_WORKMAXMP))
-			{
-				cost=cost+NPC_WindowCostCheckMp(meindex,toindex);
-			}
-		
-			if(cost==0) {
-				if(NPC_PetHealerCheck(toindex)==FALSE){
-				sprintf(token,
-				}else{
+		  if (CHAR_getInt(toindex, CHAR_MP) < CHAR_getWorkInt(toindex, CHAR_WORKMAXMP))
+		  {
+			  cost = cost + NPC_WindowCostCheckMp(meindex, toindex);
+		  }
+
+		  if (cost == 0) {
+			  if (NPC_PetHealerCheck(toindex) == FALSE) {
+				  sprintf(token,
+					  "�@�@�@�@  ＜�@耐久力氣力回復�@＞"
+					  "\n\n\n\n�@�@�@�@似乎沒有必要回復唷！�@");
+			  }
+			  else {
+				  sprintf(token, "�@�@�@�@  ＜�@耐久力氣力回復�@＞"
+					  "\n\n�@�@�@�@      似乎沒有必要回復唷！�@"
+					  "\n\n�@�@�@因為寵物好像也受傷了！"
 					  "\n                            先幫他回復吧！");
-				NPC_WindowHealerAllHeal(toindex,0 );
-			}
-		
-				
-				
-			  	buttontype=WINDOW_BUTTONTYPE_OK;
-			  	windowtype=WINDOW_MESSAGETYPE_MESSAGE;
-			  	windowno=CHAR_WINDOWTYPE_WINDOWHEALER_SPIRITMSG; 
-				break;
+				  NPC_WindowHealerAllHeal(toindex, 0);
+			  }
 
-			}else{
-			}
-		}
 
-		if(NPC_WindowHealerLevelCheck(meindex,toindex)==TRUE){
-		}
-	
-	  	buttontype=WINDOW_BUTTONTYPE_YESNO;
-	  	windowtype=WINDOW_MESSAGETYPE_MESSAGE;
-	  	windowno=CHAR_WINDOWTYPE_WINDOWHEALER_ALLMSG; 
-	  	break;
+
+			  buttontype = WINDOW_BUTTONTYPE_OK;
+			  windowtype = WINDOW_MESSAGETYPE_MESSAGE;
+			  windowno = CHAR_WINDOWTYPE_WINDOWHEALER_SPIRITMSG;
+			  break;
+
+		  }
+		  else {
+			  sprintf(token, "�@�@�@  ＜�@耐久力氣力回復�@＞"
+				  "\n\n\n�@�@�@�@ 是要回復耐久力氣力沒錯吧！"
+				  "\n\n�@�@�@�@�@收您%d的STONE 。", cost);
+		  }
+	  }
+
+	  if (NPC_WindowHealerLevelCheck(meindex, toindex) == TRUE) {
+		  sprintf(token, "�@�@�@�@  ＜�@耐久力氣力回復�@＞"
+			  "\n\n\n�@�@�@�@ �@是要回復耐久力氣力沒錯吧！"
+			  "\n\n�@現在的等級可以免費幫你回復唷！");
+	  }
+
+	  buttontype = WINDOW_BUTTONTYPE_YESNO;
+	  windowtype = WINDOW_MESSAGETYPE_MESSAGE;
+	  windowno = CHAR_WINDOWTYPE_WINDOWHEALER_ALLMSG;
+	  break;
 
 
 	  case 7:
-	  	
-	  	NPC_WindowHealerAllHeal( toindex ,3 );
-		buttontype=WINDOW_BUTTONTYPE_OK;
-	  	windowtype=WINDOW_MESSAGETYPE_MESSAGE;
-	  	windowno=CHAR_WINDOWTYPE_WINDOWHEALER_OKALLMSG; 
-	  	break;
+	  sprintf(token, "�@�@�@�@ ＜耐久力氣力已回復＞"
+		  "\n�@�@  ＜寵物也已回復一般狀態＞"
+		  "\n\n\n�@�@�@�@這樣一來就回復健康了！");
+
+	  NPC_WindowHealerAllHeal(toindex, 3);
+	  buttontype = WINDOW_BUTTONTYPE_OK;
+	  windowtype = WINDOW_MESSAGETYPE_MESSAGE;
+	  windowno = CHAR_WINDOWTYPE_WINDOWHEALER_OKALLMSG;
+	  break;
 
 
 	  case 8:
+	  sprintf(token, "\n\n\n\n �@�@真可惜似乎所帶的金錢不夠唷！");
 
-		buttontype=WINDOW_BUTTONTYPE_OK;
-	  	windowtype=WINDOW_MESSAGETYPE_MESSAGE;
-	  	windowno=CHAR_WINDOWTYPE_WINDOWHEALER_OKHPMSG; 
-	  	break;
+	  buttontype = WINDOW_BUTTONTYPE_OK;
+	  windowtype = WINDOW_MESSAGETYPE_MESSAGE;
+	  windowno = CHAR_WINDOWTYPE_WINDOWHEALER_OKHPMSG;
+	  break;
 
 	  case 9:
-		NPC_WindowHealerAllHeal(toindex,0 );
-		buttontype=WINDOW_BUTTONTYPE_OK;
-	  	windowtype=WINDOW_MESSAGETYPE_MESSAGE;
-	  	windowno=CHAR_WINDOWTYPE_WINDOWHEALER_OKHPMSG; 
-	  	break;
+	  sprintf(token, "�@�@�@�@�@�@�@＜寵物回復＞�@�@�@�@�@�@"
+		  "\n\n\n�@�@�@�@�@�@�@已經沒問題了啦！�@�@�@�@�@"
+		  "\n\n�@�@但是太勉強的話也不行唷！�@�@");
+	  NPC_WindowHealerAllHeal(toindex, 0);
+	  buttontype = WINDOW_BUTTONTYPE_OK;
+	  windowtype = WINDOW_MESSAGETYPE_MESSAGE;
+	  windowno = CHAR_WINDOWTYPE_WINDOWHEALER_OKHPMSG;
+	  break;
 
 	  case 10:
-		buttontype=WINDOW_BUTTONTYPE_OK;
-	  	windowtype=WINDOW_MESSAGETYPE_MESSAGE;
-	  	windowno=CHAR_WINDOWTYPE_WINDOWHEALER_OKHPMSG; 
-	  	break;
+	  sprintf(token, "�@�@�@�@�@�@�@＜寵物回復＞�@�@�@�@�@�@"
+		  "\n\n\n�@ 似乎沒有必要回復寵物的樣子。�@"
+		  "\n\n�@�@但是太勉強的話也不行唷！�@�@");
+	  buttontype = WINDOW_BUTTONTYPE_OK;
+	  windowtype = WINDOW_MESSAGETYPE_MESSAGE;
+	  windowno = CHAR_WINDOWTYPE_WINDOWHEALER_OKHPMSG;
+	  break;
 
 
 	}

@@ -3,7 +3,10 @@
 #include <stdio.h>
 #include <time.h>
 #include <string.h>
+#if PLATFORM_WINDOWS
+#else
 #include <unistd.h>
+#endif
 #include <math.h>
 
 #include "object.h"

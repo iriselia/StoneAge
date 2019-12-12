@@ -4,7 +4,11 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#if PLATFORM_WINDOWS
+//#include "dirent.h"
+#else
 #include <dirent.h>
+#endif
 
 #include "common.h"
 #include "object.h"

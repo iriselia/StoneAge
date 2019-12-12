@@ -121,7 +121,7 @@ INLINE BOOL MAGIC_CHECKINDEX( int index );
 INLINE int MAGIC_getInt( int index, MAGIC_DATAINT element);
 INLINE int MAGIC_setInt( int index, MAGIC_DATAINT element, int data);
 INLINE char* MAGIC_getChar( int index, MAGIC_DATACHAR element);
-INLINE BOOL MAGIC_setChar( int index ,MAGIC_DATACHAR element, char* new );
+INLINE BOOL MAGIC_setChar( int index ,MAGIC_DATACHAR element, char* input );
 int MAGIC_getMagicNum( void);
 BOOL MAGIC_initMagic( char *filename);
 BOOL MAGIC_reinitMagic( void );

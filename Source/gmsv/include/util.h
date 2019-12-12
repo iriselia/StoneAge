@@ -1,9 +1,17 @@
 #ifndef __UTIL_H__
 #define __UTIL_H__
 
+#if PLATFORM_WINDOWS
+#else
 #include <sys/time.h>
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
+
+#if PLATFORM_WINDOWS
+#define random() rand()
+#endif
 
 #include "common.h"
 
@@ -20,22 +28,22 @@ typedef struct tagSTRING128
     char string[128];
 }STRING128;
 
-typedef struct tagRECT
+typedef struct tagRECT_SA
 {
     int     x;
     int     y;
     int     width;
     int     height;
-}RECT;
-typedef struct tagPOINT
+}RECT_SA;
+typedef struct tagPOINT_SA
 {
     int     x;
     int     y;
-}POINT;
+}POINT_SA;
 /* strtol のラッパー用に使う */
 typedef enum
 {
-    CHAR,SHORT,INT,DOUBLE
+    CHAR_SA,SHORT_SA,INT_SA,DOUBLE_SA
 }CTYPE;
 
 void chop( char* src );
@@ -83,9 +91,9 @@ BOOL checkStringsUnique( char** strings, int num ,int verbose);
 char*   makeEscapeString( char* src , char* dest, int sizeofdest);
 char*   makeStringFromEscaped( char* src );
 INLINE double time_diff(struct timeval subtrahend,struct timeval subtractor);
-BOOL PointInRect( RECT* rect, POINT* p );
-BOOL CoordinateInRect( RECT* rect, int x, int y);
-int clipRect( RECT *rect1, RECT *rect2, RECT *ret );
+BOOL PointInRect( RECT_SA* rect, POINT_SA* p );
+BOOL CoordinateInRect( RECT_SA* rect, int x, int y);
+int clipRect( RECT_SA *rect1, RECT_SA *rect2, RECT_SA *ret );
 BOOL isstring1or0( char*  string );
 void easyGetTokenFromString( char *src , int count , char*output , int len );
 
@@ -103,7 +111,11 @@ INLINE double time_diff(struct timeval subtrahend,struct timeval subtractor);
 #define ABS(x)      ((x)>=0 ? (x) : -(x))
 
 /*  方向を 0 - 7 に絶対にする   */
+#if PLATFORM_WINDOWS
+#define VALIDATEDIR(x)  {(x)%=8;(x)=((x)+8)%8;}
+#else
 #define VALIDATEDIR(x)  ({(x)%=8;(x)=((x)+8)%8;})
+#endif
 
 /*  4バイトデータを2バイトデータとして使う  */
 #define GETLOWVALUE(x)  (  (x)&0x0000ffff)

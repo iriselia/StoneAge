@@ -4096,10 +4096,6 @@ void GOLD_DeleteTimeCheckOne( int objindex)
 #endif
 
 #ifdef _TIME_TICKET
-void ITEM_timeticket( int charaindex, int toindex, int haveitemindex)
-{
-	ITEM_timeticketEx( charaindex, toindex, haveitemindex, 0);
-}
 
 void ITEM_timeticketEx( int charaindex, int toindex, int haveitemindex, int flag)
 {
@@ -4149,5 +4145,10 @@ void ITEM_timeticketEx( int charaindex, int toindex, int haveitemindex, int flag
 		sprintf(msg, "時間增加%d秒，還不足%d分%d秒。", addtime, (-lefttime)/60, (-lefttime)%60 );
 	CHAR_talkToCli( charaindex, -1, msg, CHAR_COLORYELLOW);
 	CHAR_DelItem( charaindex, haveitemindex);
+}
+
+void ITEM_timeticket(int charaindex, int toindex, int haveitemindex)
+{
+	ITEM_timeticketEx(charaindex, toindex, haveitemindex, 0);
 }
 #endif

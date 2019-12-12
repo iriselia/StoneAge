@@ -544,7 +544,7 @@ static BOOL CHAR_DischargePartySub( int charaindex, int msgflg)
 			CHAR_sendLeader( CHAR_getWorkInt( toindex, CHAR_WORKOBJINDEX), 0);
 		}else {
 
-			POINT	start,end;
+			POINT_SA	start,end;
 			int 	previndex = toindex;
 			end.x = CHAR_getInt( charaindex, CHAR_X);
 			end.y = CHAR_getInt( charaindex, CHAR_Y);

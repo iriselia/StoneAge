@@ -894,7 +894,7 @@ INLINE char* _CHAR_getChar( char *file, int line, int index ,CHAR_DATACHAR eleme
     return CHAR_chara[index].string[element].string;
 }
 
-INLINE BOOL _CHAR_setChar( char *file, int line, int index ,CHAR_DATACHAR element, char* new )
+INLINE BOOL _CHAR_setChar( char *file, int line, int index ,CHAR_DATACHAR element, char* input )
 {
     if(!CHAR_CHECKINDEX(index)) {
 		print( "err _CHAR_setChar %s:%d !\n", file, line);
@@ -906,7 +906,7 @@ INLINE BOOL _CHAR_setChar( char *file, int line, int index ,CHAR_DATACHAR elemen
     }
     strcpysafe( CHAR_chara[index].string[element].string,
                 sizeof(CHAR_chara[index].string[element].string),
-                new );
+                input );
     return TRUE;
 }
 
@@ -933,7 +933,7 @@ INLINE char* _CHAR_getWorkChar( char *file, int line, int index ,CHAR_WORKDATACH
 }
 
 INLINE BOOL _CHAR_setWorkChar( char *file, int line, int index ,CHAR_WORKDATACHAR element,
-                              char* new )
+                              char* input )
 {
     if(!CHAR_CHECKINDEX(index)) {
 		print( "err %s:%d \n", file, line);
@@ -945,7 +945,7 @@ INLINE BOOL _CHAR_setWorkChar( char *file, int line, int index ,CHAR_WORKDATACHA
     }
     strcpysafe( CHAR_chara[index].workchar[element].string,
                 sizeof(CHAR_chara[index].workchar[element].string),
-                new );
+                input );
     return TRUE;
 }
 

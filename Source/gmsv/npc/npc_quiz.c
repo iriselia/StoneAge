@@ -43,7 +43,8 @@ static int quizcnt = 0;
 
 
 static void NPC_Quiz_selectWindow( int meindex, int talker, int num);
-int *NPC_GetQuestion(int meindex);
+void NPC_GetQuestion(int meindex, int* tbl, int max_size);
+int NPC_GetQuestionCount(int meindex);
 BOOL NPC_QuizItemFullCheck(int meindex, int talker);
 BOOL NPC_PlayerCheck(int meindex,int talker);
 int NPC_RealyCheack(int meindex,int talker);
@@ -65,7 +66,6 @@ BOOL NPC_QuizInit( int meindex )
 
 	char argstr[NPC_UTIL_GETARGSTR_BUFSIZE];
 	char buf[1024];
-	int *tbl;
 	int i;
 
 	NPC_Util_GetArgStr( meindex, argstr, sizeof( argstr));
@@ -85,12 +85,13 @@ BOOL NPC_QuizInit( int meindex )
 	for(i =0  ; i < 8 ; i++){
 		CHAR_setWorkInt( meindex, CHAR_WORK_PLAYER1 + i, -1);
 	}
-	tbl =  NPC_GetQuestion( meindex);
+	int count = NPC_GetQuestionCount( meindex);
 
-	if( CHAR_getWorkInt( meindex, CHAR_WORK_QUIZNUM) > ( tbl[0] - 1)){
+	if( CHAR_getWorkInt( meindex, CHAR_WORK_QUIZNUM) > count){
 		print(
+			"%s�F符合條件,圓圈quiz的問題數(%d��)比出題數(%d題)不足",
 			CHAR_getChar( meindex, CHAR_NAME),
-			(tbl[0]-1),
+			count,
 			CHAR_getWorkInt( meindex, CHAR_WORK_QUIZNUM)
 		);
 		return FALSE;
@@ -230,7 +231,8 @@ static void NPC_Quiz_selectWindow( int meindex, int talker, int num)
 	  case 2:
   		/*--メイン--*/
   		{
-			int *tbl;
+			//int *tbl;
+			int tbl[1024];
 			int point;
 			int *pl_ptr;
 			int warp_flg = -1;
@@ -329,8 +331,9 @@ static void NPC_Quiz_selectWindow( int meindex, int talker, int num)
 					CHAR_getWorkInt( meindex, CHAR_WORK_QUIZNUM) * 100;
 #if 0
 				sprintf(token,"　　　　　　　"
-							"\n\n你的正確解答率是 %d題中  %d 題 "
-							"\n\n%s",
+					"\n\n你的正確解答率是 %d題中  %d 題 "
+					"\n正確比率 %d ��"
+					"\n\n%s",
 					CHAR_getWorkInt( meindex, CHAR_WORK_QUIZNUM),
 					PLAYER.answer,
 					(int)avg,
@@ -365,7 +368,7 @@ static void NPC_Quiz_selectWindow( int meindex, int talker, int num)
 			}
 
 			/*--このＮＰＣに設定されている条件の問題番号を抜き出す--*/
-			tbl =  NPC_GetQuestion( meindex);
+			NPC_GetQuestion( meindex, tbl, 1024);
 			
 			
 			/*--問題数のチェック tbl[0]には条件を満たした問題数がはいっている --*/
@@ -432,11 +435,12 @@ static void NPC_Quiz_selectWindow( int meindex, int talker, int num)
 				}
 
 				/*--書き問題--*/
-				sprintf( token,"   quiz 第 %d 題"
-						  	"\n%s "
-				  			"\n↓寫在這裡\n"
-				  			PLAYER.quizno,
-				  			buf);
+				sprintf(token, "   quiz 第 %d 題"
+					"\n%s "
+					"\n↓寫在這裡\n"
+					"�@(寫完請按ＯＫ)",
+					PLAYER.quizno,
+					buf);
 
 				buttontype = WINDOW_BUTTONTYPE_OK;
 				messagetype = WINDOW_MESSAGETYPE_MESSAGEANDLINEINPUT;
@@ -1066,15 +1070,14 @@ BOOL QUIZ_initQuiz( char *filename)
 	return TRUE;
 
 }
-
-int *NPC_GetQuestion(int meindex)
+void NPC_GetQuestion(int meindex, int* tbl, int max_size)
+//int *NPC_GetQuestion(int meindex)
 {
 	char argstr[NPC_UTIL_GETARGSTR_BUFSIZE];
 	int i,j;
 	int type=0;
 	int answer=0;
 	int level=0;
-	int *tbl;
 	char buf[16];
 #ifdef _NPC_QUIZSCOPE
     int scope0,scope1;
@@ -1134,8 +1137,14 @@ int *NPC_GetQuestion(int meindex)
 	}
 
 	{
-		int tmp_tbl[j+1];
-		tmp_tbl[0] = j+1;
+		if ((j + 1) > 1024)
+		{
+			print("ERR NPC_GetQuestion failed!! tbl size > 1024.\n");
+			return;
+		}
+
+		//tbl[j+1];
+		tbl[0] = j+1;
 		for(j=1,i=0; i < quizcnt ;i++){
 			if( (type & (1 << (Quiz[i].type-1)))  != (1 << (Quiz[i].type-1))){
 				continue;
@@ -1153,16 +1162,83 @@ int *NPC_GetQuestion(int meindex)
 			    || i > scope1 )
 			    continue;
 #endif
-			tmp_tbl[j] = i;
+			tbl[j] = i;
 
 			j++;
 		}
 
-		tbl = tmp_tbl;
 		return tbl;
 	}
 }
 
+int NPC_GetQuestionCount(int meindex)
+{
+	char argstr[NPC_UTIL_GETARGSTR_BUFSIZE];
+	int i, j;
+	int type = 0;
+	int answer = 0;
+	int level = 0;
+	int* tbl;
+	char buf[16];
+#ifdef _NPC_QUIZSCOPE
+	int scope0, scope1;
+	char buf3[32];
+#endif
+
+	NPC_Util_GetArgStr(meindex, argstr, sizeof(argstr));
+
+	if (NPC_Util_GetStrFromStrWithDelim(argstr, "Type", buf, sizeof(buf)) != NULL) {
+		type = atoi(buf);
+	}
+	if (type <= 0) {
+		type = 0xffff;
+	}
+
+	if (NPC_Util_GetStrFromStrWithDelim(argstr, "Answer", buf, sizeof(buf)) != NULL) {
+		answer = atoi(buf);
+	}
+	if (answer <= 0) {
+		answer = 0xffff;
+	}
+
+	if (NPC_Util_GetStrFromStrWithDelim(argstr, "Level", buf, sizeof(buf)) != NULL) {
+		level = atoi(buf);
+	}
+	if (level <= 0) {
+		level = 0xffff;
+	}
+
+#ifdef _NPC_QUIZSCOPE
+	scope0 = 0;
+	scope1 = quizcnt;
+	if (NPC_Util_GetStrFromStrWithDelim(argstr, "Scope", buf, sizeof(buf)) != NULL) {
+		getStringFromIndexWithDelim(buf, "-", 1, buf3, sizeof(buf3));
+		scope0 = atoi(buf3);
+		getStringFromIndexWithDelim(buf, "-", 2, buf3, sizeof(buf3));
+		scope1 = atoi(buf3);
+	}
+#endif
+
+	for (j = 0, i = 0; i < quizcnt; i++) {
+		if ((type & (1 << (Quiz[i].type - 1))) != (1 << (Quiz[i].type - 1))) {
+			continue;
+		}
+		if ((answer & (Quiz[i].answertype)) != Quiz[i].answertype) {
+			continue;
+		}
+		if ((level & (Quiz[i].level)) != Quiz[i].level) {
+			continue;
+		}
+#ifdef _NPC_QUIZSCOPE
+		if (i < scope0
+			|| i > scope1)
+			continue;
+#endif
+		j++;
+	}
+
+	return j;
+}
 /*--アイテム欄の空きのチェック--*/
 BOOL NPC_QuizItemFullCheck(int meindex,int talker)
 {

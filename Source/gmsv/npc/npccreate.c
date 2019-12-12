@@ -517,7 +517,7 @@ BOOL NPC_isBoundarySet( int createindex )
  *  成功    TRUE(1)
  *  失敗    FALSE(0)
  ------------------------------------------------------------*/
-BOOL NPC_createGetRECT( int createindex,RECT*   r )
+BOOL NPC_createGetRECT( int createindex,RECT_SA*   r )
 {
     if( NPC_CHECKCREATEINDEX(createindex) == FALSE )return FALSE;
 

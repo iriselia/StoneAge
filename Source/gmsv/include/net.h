@@ -3,8 +3,13 @@
 
 #include "common.h"
 
+#if PLATFORM_WINDOWS
+#include <WinSock2.h>
+#else
 #include <sys/time.h>
 #include <netinet/in.h>
+#endif
+
 // Nuke +1 0902: For queuing control
 #include <signal.h>
 

@@ -1,6 +1,9 @@
 #ifndef __ITEM_GEN_H__
 #define __ITEM_GEN_H__
 
+#if PLATFORM_WINDOWS
+#define random() rand()
+#endif
 
 int ITEM_initItemIngCache( void );
 int ITEM_initItemAtom( char *fn );

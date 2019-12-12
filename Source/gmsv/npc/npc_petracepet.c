@@ -184,7 +184,7 @@ void NPC_PetRacePetLoop( int meindex)
 
 static void NPC_PetRacePet_Walk(int meindex)
 {
-	POINT start, end;
+	POINT_SA start, end;
 	int dir, i;
 
 	start.x = CHAR_getInt(meindex, CHAR_X);

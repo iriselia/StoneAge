@@ -76,7 +76,7 @@ INLINE BOOL PROFESSION_SKILL_CHECKINDEX( int index );
 INLINE int PROFESSION_SKILL_getInt( int index, PROFESSION_SKILL_DATAINT element);
 INLINE int PROFESSION_SKILL_setInt( int index, PROFESSION_SKILL_DATAINT element, int data);
 INLINE char* PROFESSION_SKILL_getChar( int index, PROFESSION_SKILL_DATACHAR element);
-INLINE BOOL PROFESSION_SKILL_setChar( int index ,PROFESSION_SKILL_DATACHAR element, char* new );
+INLINE BOOL PROFESSION_SKILL_setChar( int index ,PROFESSION_SKILL_DATACHAR element, char* input );
 int PROFESSION_SKILL_getskillNum( void );
 
 //----------------------------------------------------------------------------

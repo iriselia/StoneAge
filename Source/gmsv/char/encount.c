@@ -32,7 +32,7 @@ typedef struct tagENCOUNT_Table
     int                 zorder;
     int                 groupid[ENCOUNT_GROUPMAXNUM];       /* グループNo */
     int                 createprob[ENCOUNT_GROUPMAXNUM];    /* そのグループの出現率 */
-    RECT                rect;
+    RECT_SA                rect;
 }ENCOUNT_Table;
 ENCOUNT_Table           *ENCOUNT_table;
 #endif

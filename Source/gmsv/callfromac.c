@@ -61,7 +61,7 @@ void saacproto_ACGmsvDownRequest_recv( int fd, int min)
 //檢查是否有和ac連接,以及載入家族
 void saacproto_ACServerLogin_recv (int fd, char* result,char* data)
 {
-    if( strcmp( result , SUCCESSFUL ) != 0 ){
+    if( strcmp( result , SUCCESSFUL_STRING ) != 0 ){
         /*  ログイン失敗    */
         print( "saacproto_ACServerLogin fail! so quitting...[%s][%s]\n",
               result,data );
@@ -108,7 +108,7 @@ void saacproto_ACCharLoad_recv(int fd , char* result,char* data,int retfd,int sa
     int clifd = getfdFromFdid(retfd);
     if( CONNECT_checkfd( clifd ) == FALSE )return;
 
-    if(( strcmp( result , SUCCESSFUL ) == 0 )&&(data[0])) {
+    if(( strcmp( result , SUCCESSFUL_STRING ) == 0 )&&(data[0])) {
 #ifdef _BAD_PLAYER             // WON ADD 送壞玩家去關
         CHAR_login( clifd, data, saveindex, 0 );		// 正常玩家
 	}else if( ( strcmp( result , BADPLAYER ) == 0 ) && (data[0]) ){
@@ -199,14 +199,14 @@ void saacproto_ACCharSave_recv(int fd ,char* result, char* data,int retfd)
     case WHILECREATE:
         /* キャラ作りでのセーブ中 */
         /* それをクライアントにいう( そのまま )*/
-        if( strcmp(result,FAILED) ==0 ) data ="";
+        if( strcmp(result,FAILED_STRING) ==0 ) data ="";
         lssproto_CreateNewChar_send( clifd , result , data);
         CONNECT_setState( clifd, NOTLOGIN );
         break;
 
     case WHILELOGOUTSAVE:
         /* 普通のログアウトの時のセーブの返答 */
-        if( strcmp( result , SUCCESSFUL ) == 0 )
+        if( strcmp( result , SUCCESSFUL_STRING ) == 0 )
             /* 成功 */
             lssproto_CharLogout_send( clifd, result , "success" );
         else
@@ -261,7 +261,7 @@ void saacproto_ACCharDelete_recv(int fd,char* result,char* data,int retfd)
     case WHILECHARDELETE:
         /*  普通のキャラ消し中  */
         /*  そのまま送る  */
-        if( strcmp(result,FAILED) == 0)data="";
+        if( strcmp(result,FAILED_STRING) == 0)data="";
         lssproto_CharDelete_send( clifd, result , data );
         CONNECT_setState( clifd,  NOTLOGIN );
         CONNECT_setCharaindex( clifd, -1 );
@@ -307,7 +307,7 @@ void saacproto_ACLock_recv(int fd , char* result, char* data ,int retfd)
     switch( CONNECT_getState( clifd ) ){
     case WHILECANNOTLOGIN:
         /* ログイン失敗した時のロックの返答   */
-        if( strcmp( result , SUCCESSFUL ) == 0 ){
+        if( strcmp( result , SUCCESSFUL_STRING ) == 0 ){
             /* 成功で何もしていない状態にする */
             CONNECT_setState( clifd, NOTLOGIN );
 
@@ -537,7 +537,7 @@ void saacproto_ACAddFM_recv(int fd, char *result, int fmindex, int charfdid,
 	int clifd = getfdFromFdid(charfdid);
 //	print("ACAddFM_0\n");
 	if (CONNECT_checkfd(clifd) == FALSE)	return;
-	if (strcmp(result, SUCCESSFUL) == 0)	ret = 1;
+	if (strcmp(result, SUCCESSFUL_STRING) == 0)	ret = 1;
 	else	ret = 0;
 //	print("ACAddFM_1 clifd:%d ret:%d fmindex:%d index:%d\n",
 //		clifd, ret, fmindex, index);
@@ -548,7 +548,7 @@ void saacproto_ACJoinFM_recv(int fd, char *result, int recv, int charfdid)
 	int ret;
 	int clifd = getfdFromFdid(charfdid);
 	if (CONNECT_checkfd(clifd) == FALSE)	return;
-	if (strcmp(result, SUCCESSFUL) == 0)	ret = 1;
+	if (strcmp(result, SUCCESSFUL_STRING) == 0)	ret = 1;
 	else	ret = 0;
 	ACJoinFM(clifd, ret, recv);
 }
@@ -557,7 +557,7 @@ void saacproto_ACLeaveFM_recv(int fd, char *result, int resultflag, int charfdid
 	int ret;
 	int clifd = getfdFromFdid(charfdid);
 	if (CONNECT_checkfd(clifd) == FALSE)	return;
-	if (strcmp(result, SUCCESSFUL) == 0)	ret = 1;
+	if (strcmp(result, SUCCESSFUL_STRING) == 0)	ret = 1;
 	else	ret = 0;
 	ACLeaveFM(clifd, ret, resultflag);
 	
@@ -572,7 +572,7 @@ void saacproto_ACDelFM_recv(int fd, char *result, int charfdid)
 	int ret;
 	int clifd = getfdFromFdid(charfdid);
 	if (CONNECT_checkfd(clifd) == FALSE)	return;
-	if (strcmp(result, SUCCESSFUL) == 0)	ret = 1;
+	if (strcmp(result, SUCCESSFUL_STRING) == 0)	ret = 1;
 	else	ret = 0;
 	
 	ACDelFM(clifd, ret);
@@ -582,7 +582,7 @@ void saacproto_ACDelFM_recv(int fd, char *result, int charfdid)
 void saacproto_ACShowFMList_recv(int fd, char *result, int fmnum, char *data)
 {
 	int ret;
-	if (strcmp(result, SUCCESSFUL) == 0)	ret = 1;
+	if (strcmp(result, SUCCESSFUL_STRING) == 0)	ret = 1;
 	else	ret = 0;
 	ACShowFMList(ret, fmnum, data);
 }
@@ -768,7 +768,7 @@ void saacproto_ACShowMemberList_recv(int fd, char *result, int index, int fmmemn
 {
 	int ret;
 	// fmmemnum -1:無此索引值, -2:無更新 else:表示此家族人數
-	if (strcmp(result, SUCCESSFUL) == 0)	ret = 1;
+	if (strcmp(result, SUCCESSFUL_STRING) == 0)	ret = 1;
 	else	ret = 0;
 	ACShowMemberList(ret, index, fmmemnum, fmacceptflag, fmjoinnum, data);
 }
@@ -777,7 +777,7 @@ void saacproto_ACFMDetail_recv(int fd, char *result, char *data, int charfdid)
 	int ret;
 	int clifd = getfdFromFdid(charfdid);
 	if (CONNECT_checkfd(clifd) == FALSE)	return;
-	if (strcmp(result, SUCCESSFUL) == 0)	ret = 1;
+	if (strcmp(result, SUCCESSFUL_STRING) == 0)	ret = 1;
 	else	ret = 0;
 	ACFMDetail(ret, data, clifd );
 }
@@ -806,7 +806,7 @@ void saacproto_ACFMCharLogin_recv(int fd, char *result, int index, int floor,
 	int ret;
 	int clifd = getfdFromFdid(charfdid);
 	if (CONNECT_checkfd(clifd) == FALSE)	return;
-	if (strcmp(result, SUCCESSFUL) == 0)	ret = 1;
+	if (strcmp(result, SUCCESSFUL_STRING) == 0)	ret = 1;
 	else	ret = 0;
 //	print("Login fd:%d result:%s index:%d floor:%d fmdp:%d joinflag:%d setup:%d charfdid:%d\n",
 //		fd, result, index, floor, fmdp, joinflag, fmsetupflag, charfdid);
@@ -833,7 +833,7 @@ void saacproto_ACFMReadMemo_recv(int fd, char *result, int index, int num,
 	// index(家族 WORK 的索引)，num(資料筆數，最大35筆)
 	// dataindex(最新的資料數)，data(資料)。
 	// 註：num -1:無此索引值, -2:無更新 else:表示此家族人數
-	if (strcmp(result, SUCCESSFUL) == 0)	ret = 1;
+	if (strcmp(result, SUCCESSFUL_STRING) == 0)	ret = 1;
 	else	ret = 0;
 	ACShowFMMemo(ret, index, num, dataindex, data);
 }
@@ -843,7 +843,7 @@ void saacproto_ACFMWriteMemo_recv(int fd, char *result, int index)
 void saacproto_ACFMPointList_recv(int fd, char *result, char *data)
 {
 	int ret;
-	if (strcmp(result, SUCCESSFUL) == 0)	ret = 1;
+	if (strcmp(result, SUCCESSFUL_STRING) == 0)	ret = 1;
 	else	ret = 0;
 	ACShowPointList(ret, data);
 }
@@ -868,7 +868,7 @@ void saacproto_ACFMSetTAX_recv(int fd, char *result, int fm_tax, int fm_point, i
     //int playernum = CHAR_getPlayerMaxNum();
 	//int i;
 
-	if (strcmp(result, SUCCESSFUL) == 0){	
+	if (strcmp(result, SUCCESSFUL_STRING) == 0){	
 		if( FAMILY_MAXHOME <= fm_point || fm_point < 0 ){
 			print("err fm_point=%d\n", fm_point);
 			return;
@@ -902,7 +902,7 @@ void saacproto_ACSetFMPoint_recv(int fd, char *result, int r, int charfdid)
 	int ret;
 	int clifd = getfdFromFdid(charfdid);
 	if( CONNECT_checkfd(clifd) == FALSE )return;
-	if (strcmp(result, SUCCESSFUL) == 0){
+	if (strcmp(result, SUCCESSFUL_STRING) == 0){
 		ret = 1;
 	}else{
 		ret = 0;
@@ -917,7 +917,7 @@ void saacproto_ACFMAnnounce_recv(int fd, char *result, char *fmname,
 	int fmindex, int index, int kindflag, char *data, int color)
 {
 	int ret;
-	if (strcmp(result, SUCCESSFUL) == 0){
+	if (strcmp(result, SUCCESSFUL_STRING) == 0){
 		ret = 1;
 	}else{
 		ret = 0;
@@ -930,7 +930,7 @@ extern void SortManorSchedule();
 void saacproto_ACShowTopFMList_recv(int fd, char *result, int kindflag, int num, char *data)
 {
 	int ret;
-	if (strcmp(result, SUCCESSFUL) == 0)	ret = 1;
+	if (strcmp(result, SUCCESSFUL_STRING) == 0)	ret = 1;
 	else	ret = 0;
 	ACShowDpTop(ret, num, data, kindflag);
 #ifdef _NEW_MANOR_LAW
@@ -958,7 +958,7 @@ void saacproto_ACFixFMData_recv(int fd, char *result, int kindflag, char *data1,
 	int charaindex = CONNECT_getCharaindex( clifd );
 	if( CONNECT_checkfd(clifd) == FALSE )return;
 	
-	if (strcmp(result, SUCCESSFUL) == 0)	ret = 1;
+	if (strcmp(result, SUCCESSFUL_STRING) == 0)	ret = 1;
 	else    ret = 0;
 	
 	if( !CHAR_CHECKINDEX(charaindex) )	return;
@@ -1041,7 +1041,7 @@ void saacproto_ACFixFMPK_recv(int fd, char *result, int data, int winindex,
 	int loseindex)
 {
 	int ret;
-	if (strcmp(result, SUCCESSFUL) == 0)	ret = 1;
+	if (strcmp(result, SUCCESSFUL_STRING) == 0)	ret = 1;
 	else    ret = 0;
          
 //        print("FixFMPK_recv result:%s data:%d winindex:%d loseindex:%d\n", result, data, winindex, loseindex);
@@ -1061,7 +1061,7 @@ void saacproto_ACGMFixFMData_recv(int fd, char *result, char *fmname, int charfd
 	char buf[256];
 	if( CONNECT_checkfd(clifd) == FALSE )return;
 	
-	if (strcmp(result, SUCCESSFUL) == 0)	ret = 1;
+	if (strcmp(result, SUCCESSFUL_STRING) == 0)	ret = 1;
 	else    ret = 0;
          
         print("GMFixFMData_recv result:%s\n", result);
@@ -1086,7 +1086,7 @@ void saacproto_ACGetFMData_recv(int fd, char *result, int kindflag, int data,
 	int clifd = getfdFromFdid(charfdid);
 	if( CONNECT_checkfd(clifd) == FALSE )return;
 	
-	if (strcmp(result, SUCCESSFUL) == 0)	ret = 1;
+	if (strcmp(result, SUCCESSFUL_STRING) == 0)	ret = 1;
 	else    ret = 0;
 	
 	//print(" FMBank2_%d_%d_%d ", ret, kindflag, data );
@@ -1109,7 +1109,7 @@ void saacproto_ACFMClearPK_recv(int fd, char *result, char *fmname, int fmindex,
 {
 	int ret, i = 0;
 	
-	if (strcmp(result, SUCCESSFUL) == 0)	ret = 1;
+	if (strcmp(result, SUCCESSFUL_STRING) == 0)	ret = 1;
 	else    ret = 0;
 	for (i = 0; i < MAX_SCHEDULEMAN * MAX_SCHEDULE; i++)
 	{
@@ -1416,7 +1416,7 @@ void saacproto_ACCharSavePoolItem_recv(int fd ,char* result, char* data,int retf
 	int charaindex = getCharindexFromFdid( retfd);
 	//print("\n ACCharSavePoolItem_recv:%s ", data);
 	if( !CHAR_CHECKINDEX(charaindex) ) return;
-	if( strstr( result, FAILED ) != NULL ){
+	if( strstr( result, FAILED_STRING ) != NULL ){
 		CHAR_talkToCli( charaindex, -1, "道具倉庫資料存檔失敗！", CHAR_COLORYELLOW);
 		return;
 
@@ -1430,7 +1430,7 @@ void saacproto_ACCharGetPoolItem_recv(int fd ,char* result, char* data,int retfd
 
 	//print("\n ACCharGetPoolItem_recv:%s ", data);
 
-	if( strcmp( result , SUCCESSFUL ) != 0 ) return;
+	if( strcmp( result , SUCCESSFUL_STRING ) != 0 ) return;
 	charaindex = getCharindexFromFdid(retfd);
 	if( !CHAR_CHECKINDEX( charaindex) ) return;
 	clifd = getfdFromCharaIndex( charaindex);
@@ -1474,7 +1474,7 @@ void saacproto_ACCharSavePoolPet_recv(int fd ,char* result, char* data,int retfd
 {
 	int charaindex = getCharindexFromFdid( retfd);
 	if( !CHAR_CHECKINDEX(charaindex) ) return;
-	if( strstr( result, FAILED ) != NULL ){
+	if( strstr( result, FAILED_STRING ) != NULL ){
 		CHAR_talkToCli( charaindex, -1, "寵物倉庫資料存檔失敗！", CHAR_COLORYELLOW);
 		return;
 
@@ -1486,7 +1486,7 @@ void saacproto_ACCharGetPoolPet_recv(int fd ,char* result, char* data,int retfd,
 	Char*   ch = NULL;
 	int i, clifd, charaindex;
 
-	if( strcmp( result , SUCCESSFUL ) != 0 ) return;
+	if( strcmp( result , SUCCESSFUL_STRING ) != 0 ) return;
 	charaindex = getCharindexFromFdid(retfd);
 	if( !CHAR_CHECKINDEX( charaindex) ) return;
 	clifd = getfdFromCharaIndex( charaindex);

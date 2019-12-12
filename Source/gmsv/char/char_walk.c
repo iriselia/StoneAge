@@ -96,7 +96,7 @@ static void CHAR_sendMapAtWalk( int index, int fl ,int ox ,int oy,
         return;
 
     }else{
-        RECT    send,get;
+        RECT_SA    send,get;
         char*   mapdata;
         int oldlux = ox - (int)(seesiz/2);
         int oldluy = oy - (int)(seesiz/2);
@@ -207,8 +207,8 @@ static CHAR_WALKRET CHAR_walk_move( int charaindex, int dir )
     ff = of;
 
     if( CHAR_getInt( charaindex,CHAR_WHICHTYPE ) == CHAR_TYPEENEMY ){
-        RECT    walkr;
-        POINT   nextp;
+        RECT_SA    walkr;
+        POINT_SA   nextp;
         int npccreateindex;
         npccreateindex = CHAR_getInt( charaindex,CHAR_NPCCREATEINDEX );
         if( CHAR_isInvincibleArea( ff,fx,fy)) {
@@ -233,7 +233,7 @@ static CHAR_WALKRET CHAR_walk_move( int charaindex, int dir )
 
 
     if( CHAR_getFlg( charaindex, CHAR_ISBIG ) == 1 ){
-        static POINT offset[5]={
+        static POINT_SA offset[5]={
             { 0,-1},
             {-1, 0},
             { 0, 0},
@@ -660,7 +660,7 @@ void CHAR_walkcall( int index )
     char    tmp[128];
     int     dir,mode;
 	int		ret;
-	POINT	start,end;
+	POINT_SA	start,end;
 
     if( !CHAR_CHECKINDEX( index ) ) return;
 

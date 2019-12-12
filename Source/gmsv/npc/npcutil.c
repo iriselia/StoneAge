@@ -277,7 +277,7 @@ int NPC_Util_YN(char *input )
 }
 
 
-int NPC_Util_getDirFromTwoPoint( POINT* pstart, POINT* pend )
+int NPC_Util_getDirFromTwoPoint( POINT_SA* pstart, POINT_SA* pend )
 {
     /*  y*x */
     static int     dirtable[3][3]={
@@ -953,7 +953,7 @@ int NPC_Util_GetDirCharToChar( int fromindex, int toindex, int mode)
 	if( CHAR_getInt( fromindex, CHAR_FLOOR)
 		== CHAR_getInt( toindex, CHAR_FLOOR))
 	{
-		POINT	start,end;
+		POINT_SA	start,end;
 		int		dir;
 		start.x = CHAR_getInt( fromindex, CHAR_X);
 		start.y = CHAR_getInt( fromindex, CHAR_Y);
@@ -1164,12 +1164,12 @@ char *NPC_Util_GetStrFromStrWithDelim( char *srcstr, char *srhstr,
 	return cret;
 }
 
-inline double NPC_Util_sellRate( int seller )
+INLINE double NPC_Util_sellRate( int seller )
 {
    	return (CHAR_getInt( seller, CHAR_MERCHANTLEVEL)&0x0000ffff)*0.01;
 }
 
-inline double NPC_Util_buyRate( int buyer )
+INLINE double NPC_Util_buyRate( int buyer )
 {
     return (CHAR_getInt( buyer, CHAR_MERCHANTLEVEL )>>16)*0.01;
 }

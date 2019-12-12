@@ -2185,6 +2185,7 @@ void Raceman_GetQuestion( int meindex ,int talker , char *token)
 	sprintf( token,"腦筋動一動！答對了，你的寵物才能登記唷\n"
 			"\n%s "
 			"\n↓寫在這裡\n"
+			"�@(寫完請按ＯＫ)",
 			buf);	
 
 	//sprintf(buuf,"j%d quiz:%d qtotal:%d setint:%d",j,quiz,quiztotal,CHAR_getWorkInt( talker , CHAR_WORK_RACEQUIZ ));

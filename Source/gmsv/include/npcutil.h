@@ -6,7 +6,7 @@ BOOL NPC_Util_HaveTitle( int charindex , int titleindex );
 BOOL NPC_Util_Nearby( int x1 , int y1, int x2 , int y2 );
 BOOL NPC_Util_CharNearby(int ind1,int ind2);
 int NPC_Util_YN(char *input );
-int NPC_Util_getDirFromTwoPoint( POINT* pstart, POINT* pend );
+int NPC_Util_getDirFromTwoPoint( POINT_SA* pstart, POINT_SA* pend );
 int NPC_Util_countHaveItem( int meindex , int itemid );
 BOOL NPC_Util_isBackContact( int frontindex , int backindex );
 
@@ -47,8 +47,8 @@ char *NPC_Util_GetArgStr( int index, char *argstr, int len);
 int NPC_Util_GetNumFromStrWithDelim( char *srcstr, char* in);
 char *NPC_Util_GetStrFromStrWithDelim( char *srcstr, char *srhstr,
 										char *buf, int len);
-inline double NPC_Util_sellRate( int seller );
-inline double NPC_Util_buyRate( int buyer );
+INLINE double NPC_Util_sellRate( int seller );
+INLINE double NPC_Util_buyRate( int buyer );
 BOOL NPC_Util_IsVisiblePlayer( int meindex);
 BOOL NPC_Util_WordInclude( char *text , char *word );
 void NPC_Util_RandomToken(char *in, char *out, int outbufsize );

@@ -155,7 +155,7 @@ typedef enum
 
 typedef enum
 {
-    GROUP_NAME,
+    GROUP_NAME_SA,
     GROUP_DATACHARNUM,
 
 }GROUP_DATACHAR;
@@ -191,7 +191,7 @@ INLINE int ENEMY_getInt( int index, ENEMY_DATAINT element);
 
 INLINE int *ENEMY_getIntdata( int index);
 
-INLINE BOOL ENEMY_setChar( int index ,ENEMY_DATACHAR element, char* new );
+INLINE BOOL ENEMY_setChar( int index ,ENEMY_DATACHAR element, char* input);
 INLINE char *ENEMY_getChar( int index, ENEMY_DATACHAR element);
 int ENEMY_getEnemyNum( void);
 BOOL ENEMY_initEnemy( char* filename );
@@ -214,7 +214,7 @@ INLINE BOOL ENEMYTEMP_CHECKINDEX( int index);
 INLINE int ENEMYTEMP_setInt( int index, ENEMYTEMP_DATAINT element, int data);
 INLINE int ENEMYTEMP_getInt( int index, ENEMYTEMP_DATAINT element);
 INLINE char *ENEMYTEMP_getChar( int index, ENEMYTEMP_DATACHAR element);
-INLINE BOOL ENEMYTEMP_getInt_setChar( int index ,ENEMYTEMP_DATACHAR element, char* new );
+INLINE BOOL ENEMYTEMP_getInt_setChar( int index ,ENEMYTEMP_DATACHAR element, char* input);
 INLINE char *ENEMYTEMP_getInt_getChar( int index, ENEMYTEMP_DATACHAR element);
 int ENEMYTEMP_getInt_getEnemyNum( void);
 BOOL ENEMYTEMP_getInt_initEnemy( char* filename );
@@ -225,7 +225,7 @@ int ENEMYTEMP_getEnemyTempArrayFromInitnum( int EnemyTempNo);
 
 INLINE int GROUP_setInt( int index, GROUP_DATAINT element, int data);
 INLINE int GROUP_getInt( int index, GROUP_DATAINT element);
-INLINE BOOL GROUP_setChar( int index ,GROUP_DATACHAR element, char* new );
+INLINE BOOL GROUP_setChar( int index ,GROUP_DATACHAR element, char* input);
 INLINE char *GROUP_getChar( int index, GROUP_DATACHAR element);
 int GROUP_getEnemyNum( void);
 

@@ -1,16 +1,22 @@
 #include <stdio.h>
 #include <string.h>
+
+#if PLATFORM_WINDOWS
+#include <WinSock2.h>
+#else
 #include <strings.h>
-#include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/time.h>
-#include <sys/stat.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
-#include <stdlib.h>
 #include <unistd.h>
-#include <fcntl.h>
 #include <netdb.h>
+#endif
+
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <stdlib.h>
+#include <fcntl.h>
 #include <errno.h>
 #include "autil.h"
 #include "util.h"
@@ -559,10 +565,19 @@ int connectmServer(char* hostname,unsigned short port)
     }
 
     //set the no block
+#if PLATFORM_WINDOWS
+	u_long mode = 1;  // 1 to enable non-blocking socket
+	if (ioctlsocket(fd, FIONBIO, &mode))
+	{
+		print("set noblock error!\n");
+			return -1;
+	}	
+#else
     if ( fcntl(fd,F_SETFL,O_NONBLOCK) == -1 ){
             print("set noblock error!\n");
             return -1;
     }
+#endif
 
    lr = connect(fd,(struct sockaddr*)&sock,sizeof(struct sockaddr_in));
     if( lr != 0 ){
@@ -593,7 +608,16 @@ int connectmServer(char* hostname,unsigned short port)
             errorcodelen=sizeof(errorcode);
             getsockopt(fd,SOL_SOCKET,SO_ERROR,&errorcode,&errorcodelen);
             if (errorcode == 0 ){
-                    fcntl(fd,F_SETFL,0);
+#if PLATFORM_WINDOWS
+					u_long mode = 0;  // 0 to disable non-blocking socket
+					if (ioctlsocket(fd, FIONBIO, &mode))
+					{
+						print("set noblock error!\n");
+						return -1;
+					}
+#else
+					fcntl(fd, F_SETFL, 0);
+#endif
                     print("connectGmsv return fd=%d\n",fd);
                     return fd;
             }else{

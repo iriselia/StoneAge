@@ -83,13 +83,13 @@ INLINE char *ENEMY_getChar( int index, ENEMY_DATACHAR element)
     return ENEMY_enemy[index].chardata[element].string;
 }
 
-INLINE BOOL ENEMY_setChar( int index ,ENEMY_DATACHAR element, char* new )
+INLINE BOOL ENEMY_setChar( int index ,ENEMY_DATACHAR element, char* input )
 {
     if(!ENEMY_CHECKINDEX(index))return FALSE;
     if(!ENEMY_CHECKCHARDATAINDEX(element))return FALSE;
     strcpysafe( ENEMY_enemy[index].chardata[element].string,
                 sizeof(ENEMY_enemy[index].chardata[element].string),
-                new );
+                input );
     return TRUE;
 }
 
@@ -137,13 +137,13 @@ INLINE char *ENEMYTEMP_getChar( int index, ENEMYTEMP_DATACHAR element)
     return ENEMYTEMP_enemy[index].chardata[element].string;
 }
 
-INLINE BOOL ENEMYTEMP_setChar( int index ,ENEMYTEMP_DATACHAR element, char* new )
+INLINE BOOL ENEMYTEMP_setChar( int index ,ENEMYTEMP_DATACHAR element, char* input )
 {
     if(!ENEMYTEMP_CHECKINDEX(index))return FALSE;
     if(!ENEMYTEMP_CHECKCHARDATAINDEX(element))return FALSE;
     strcpysafe( ENEMYTEMP_enemy[index].chardata[element].string,
                 sizeof(ENEMYTEMP_enemy[index].chardata[element].string),
-                new );
+                input );
     return TRUE;
 }
 
@@ -191,13 +191,13 @@ INLINE char *GROUP_getChar( int index, GROUP_DATACHAR element)
     return GROUP_group[index].chardata[element].string;
 }
 
-INLINE BOOL GROUP_setChar( int index ,GROUP_DATACHAR element, char* new )
+INLINE BOOL GROUP_setChar( int index ,GROUP_DATACHAR element, char* input )
 {
     if(!GROUP_CHECKINDEX(index))return FALSE;
     if(!GROUP_CHECKCHARDATAINDEX(element))return FALSE;
     strcpysafe( GROUP_group[index].chardata[element].string,
                 sizeof(GROUP_group[index].chardata[element].string),
-                new );
+                input );
     return TRUE;
 }
 
@@ -735,7 +735,7 @@ BOOL GROUP_initGroup( char* filename )
             fprint("Syntax Error file:%s line:%d\n",filename,linenum);
             continue;
         }
-        GROUP_setChar( group_readlen, GROUP_NAME, token);
+        GROUP_setChar( group_readlen, GROUP_NAME_SA, token);
 
         /* 2つ目以降は数値データ */
 #define	GROUP_STARTINTNUM		2

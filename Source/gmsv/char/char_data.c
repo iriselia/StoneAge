@@ -26,7 +26,6 @@
 #include "defaultPlayer.h"
 #include "defaultGroundEnemy.h"
 
-
 #include "ls2data.dat"
 
 // CoolFish: Family 2001/7/28
@@ -374,7 +373,7 @@ int CHAR_seekGraphicNumberFromString( char* string )
     int     ret;
 
     /* そのままの数字だったらそのまま返す。 */
-    if( strtolchecknum( string, &ret,10,INT ) )return ret;
+    if( strtolchecknum( string, &ret,10,INT_SA ) )return ret;
 
     hashvalue = hashpjw( string );
     for( i = 0 ; i < arraysizeof( convertStringNumber ); i ++ )
@@ -393,7 +392,7 @@ typedef struct tagCHAR_invinsibleArea
 {
     CHAR_AREAKIND   kind;
     int     floor;
-    RECT    area;
+    RECT_SA    area;
     int     work[10];
 }CHAR_invincibleArea;
 CHAR_invincibleArea*    CHAR_invarea;
@@ -518,8 +517,8 @@ BOOL CHAR_initInvinciblePlace( char* filename )
             }else
                 getFourIntsFromString( token,&lx,&ly,&rx,&ry );
 
-            if( lx > rx )swap(lx,rx);
-            if( ly > ry )swap(ly,ry);
+            if( lx > rx )swapT(int, lx,rx);
+            if( ly > ry )swapT(int, ly,ry);
 
             CHAR_invarea[invreadlen].area.x = lx;
             CHAR_invarea[invreadlen].area.y = ly;

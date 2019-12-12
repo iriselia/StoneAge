@@ -318,7 +318,7 @@ void saac_ChatRoom_recvall ( int fd , char *result, char *data, int charaindex, 
 	if( strcmp( Head, "C") == 0 ) { // 成立頻道
 //		int fd = getfdFromCharaIndex( charaindex);
 //		if( getStringFromIndexWithDelim( data , "|", 2, result, sizeof(result)) == FALSE ) return;
-		if( !strcmp( result, SUCCESSFUL) ){
+		if( !strcmp( result, SUCCESSFUL_STRING) ){
 
 			if( getStringFromIndexWithDelim( data , "|", 3, buf, sizeof(buf)) == FALSE ) return;
 			chat = atoi( buf);

@@ -3,8 +3,11 @@
 #include <time.h>
 #include <string.h>
 #include <signal.h>
-#include <unistd.h>
 
+#if PLATFORM_WINDOWS
+#else
+#include <unistd.h>
+#endif
 
 #include "init.h"
 #include "net.h"
@@ -57,7 +60,8 @@ time_t AngelNextTime;
 void AngelReadyProc();
 #endif
 
-#include "genver.h"
+// TODO: genver.h
+// #include "genver.h"
 
 void warplog_proc();
 
@@ -66,12 +70,15 @@ int main( int argc , char** argv, char** env )
     /*  とりあえず時間を設定しておく    */
     setNewTime();
 
+	// TODO: genver.h
+	/*
     if ( argc > 1 && 0==strcmp(argv[1],"-v"))
     {
         printf("%s",genver);
         exit(0);
     }
     else fprintf(stderr,"%s",genver);
+	*/
 
     EXITWITHEXITCODEIFFALSE( util_Init() , 1);
 
@@ -118,8 +125,11 @@ int main( int argc , char** argv, char** env )
 void mainloop( void )
 {
     NPC_generateLoop( 1 );
-    signal(SIGUSR1,sigusr1);
+	// TODO: Fix Signals
+	/*
+	signal(SIGUSR1,sigusr1);
     signal(SIGUSR2,sigusr2);
+	*/
 #ifdef _MAP_WARPPOINT
 	MAPPOINT_InitMapWarpPoint();
 	if( !MAPPOINT_loadMapWarpPoint() ){

@@ -1,9 +1,11 @@
 #include "version.h"
-#include <unistd.h>
 #include <stdio.h>
+#if PLATFORM_WINDOWS
+#else
+#include <unistd.h>
 #include <strings.h>
 #include <unistd.h>
-
+#endif
 
 #include "configfile.h"
 #include "util.h"
@@ -86,7 +88,7 @@ BOOL parseCommandLine( int argc , char** argv )
         {
             int     debuglevel;
             if( !strtolchecknum( optarg, (int*)&debuglevel, 10,
-                                 INT)){
+                                 INT_SA)){
                 print( "Specify digit number\n" );
                 return FALSE;
             }
@@ -156,9 +158,13 @@ BOOL init(int argc , char** argv , char** env )
 	char line[256];
 #endif
     srand( getpid());
+#if PLATFORM_WINDOWS
+	print( "This Program is compiled at %s %s by msvc %s\n",
+		__DATE__, __TIME__, _MSC_VER );
+#else
     print( "This Program is compiled at %s %s by gcc %s\n",
            __DATE__ , __TIME__ , __VERSION__ );
-
+#endif
     defaultConfig( argv[0] );
     signalset();
 

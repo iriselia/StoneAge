@@ -82,23 +82,37 @@ static void NPC_Charm_selectWindow( int meindex, int toindex, int num)
   	windowtype = WINDOW_MESSAGETYPE_MESSAGE;
 
 	switch( num) {
-	  case 0:
-  		/*--選択画面--*/
-				  "\n "
-		);
+		case 0:
+		sprintf(token,
+			"4\n �@�@�@   = = 美容師 = = "
+			"\n\n �@歡迎光臨，今天要做什麼呢？"
+			"\n "
+			"\n\n�@�@�@�@《�@給我魅力�@》 "
+			"\n\n�@�@�@�@《 什麼也不做 》 ");
 
-	  	buttontype = WINDOW_BUTTONTYPE_NONE;
-	  	windowtype = WINDOW_MESSAGETYPE_SELECT;
-	  	windowno = CHAR_WINDOWTYPE_CHARM_START; 
-	  	break;
+
+		buttontype = WINDOW_BUTTONTYPE_NONE;
+		windowtype = WINDOW_MESSAGETYPE_SELECT;
+		windowno = CHAR_WINDOWTYPE_CHARM_START;
+		break;
 
 	case 1:
 		cost = NPC_CharmCost( meindex, toindex);
 		if(cost == -1){
+			sprintf(token,
+				"�@�@�@�@     = = 美容師 = =  "
+				"\n\n�@�@�@�@你的魅力真是完美"
+				"\n\n�@�@�@請永遠保持你的魅力唷。"
 			);
+
 		  	buttontype = WINDOW_BUTTONTYPE_OK;
 		}else{
-					  "\n\n 要將你的魅力上升五點的話"
+			sprintf(token,
+				"�@�@�@�@     = = 美容師 = =  "
+				"\n�@�幘{在,千禧特惠價實施中��"
+				"\n\n 要將你的魅力上升五點的話"
+				"\n�@�@�@�@需要%6d的stone唷！"
+				"\n\n�@�@�@即使這樣也可以嗎？", cost
 			);
 		  	buttontype = WINDOW_BUTTONTYPE_YESNO;
 
@@ -113,6 +127,10 @@ static void NPC_Charm_selectWindow( int meindex, int toindex, int num)
 		chartype = CHAR_getInt( toindex, CHAR_IMAGETYPE);
 		
 		if(cost > CHAR_getInt( toindex, CHAR_GOLD)) {
+			sprintf(token,
+				"�@�@�@�@     = = 美容師 = =  "
+				"\n\n�@�@ 哎呀!你的錢不夠唷！"
+				"\n�@�@    先去存好錢下次再來吧！"
 			);
 
 		}else{
@@ -121,25 +139,44 @@ static void NPC_Charm_selectWindow( int meindex, int toindex, int num)
 			/*--キャラのタイプによってメッセージを変えてみた--*/
 			switch( chartype) {
 			  case CHAR_IMAGETYPE_GIRL:
-				);
+			  sprintf(token,
+				  "�@�@�@�@     = = 美容師 = =  "
+				  "\n\n �@嗯,這樣你的魅力就上升囉！"
+				  "\n\n�@�@�@愈來愈可愛了呢！"
+			  );
 
 				break;
 			  case CHAR_IMAGETYPE_BOY:
-				);
+			  sprintf(token,
+				  "�@�@�@�@     = = 美容師 = =  "
+				  "\n\n �@嗯,這樣你的魅力就上升囉！"
+				  "\n\n�@�@是不是比剛才要帥多了呢？"
+			  );
 			  	break;
 			  	
 			  case CHAR_IMAGETYPE_CHILDBOY:
 			  case CHAR_IMAGETYPE_CHILDGIRL:
-				);
+			  sprintf(token,
+				  "�@�@�@�@     = = 美容師 = =  "
+				  "\n\n �@嗯,這樣你的魅力就上升囉！"
+				  "\n\n�@�@  真的變得好可愛唷！"
+			  );
 			 	break;
 			 	
 			   case CHAR_IMAGETYPE_MAN:
-				);
+			   sprintf(token,
+				   "�@�@�@�@     = = 美容師 = =  "
+				   "\n\n �@嗯,這樣你的魅力就上升囉！"
+				   "\n\n �@�@�@變得更酷了呢！"
+			   );
 			 	break;
 			 	
 			   case CHAR_IMAGETYPE_WOMAN:
-				  "\n\n    可真是變得愈來愈美了呢！"
-				);
+			   sprintf(token,
+				   "�@�@�@�@     = = 美容師 = =  "
+				   "\n\n �@嗯,這樣你的魅力就上升囉！"
+				   "\n\n    可真是變得愈來愈美了呢！"
+			   );
 			 	break;
 			 
 			 }

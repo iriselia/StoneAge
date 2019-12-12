@@ -1,7 +1,22 @@
 #ifndef __HANDLETIME_H__ 
 #define __HANDLETIME_H__
 
+#if PLATFORM_WINDOWS
+#include <time.h>
+#include <WinSock2.h>
+/*
+#ifdef _WINDEF_
+#else
+typedef struct timeval
+{
+	long tv_sec;
+	long tv_usec;
+} timeval;
+#endif
+//*/
+#else
 #include <sys/time.h>
+#endif
 
 #undef EXTERN
 #ifdef __HANDLETIME_C__

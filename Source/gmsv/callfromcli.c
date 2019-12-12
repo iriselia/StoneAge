@@ -114,25 +114,25 @@ void lssproto_CreateNewChar_recv( int fd,int dataplacenum,char* charname,
     if( CONNECT_isCLI( fd ) == FALSE )return;
 
     if( CONNECT_isNOTLOGIN(fd) == FALSE ){
-        lssproto_CreateNewChar_send( fd, FAILED, "Not NOTLOGIN State\n" );
+        lssproto_CreateNewChar_send( fd, FAILED_STRING, "Not NOTLOGIN State\n" );
         return;
     }
 
 #ifdef _DEATH_FAMILY_LOGIN_CHECK 	// pk戰無法創新人物
-		lssproto_CreateNewChar_send( fd, FAILED, "" );
+		lssproto_CreateNewChar_send( fd, FAILED_STRING, "" );
 		return;
 #endif
 
 #ifdef _DEATH_CONTEND	// pk戰無法創新人物
-		lssproto_CreateNewChar_send( fd, FAILED, "" );
+		lssproto_CreateNewChar_send( fd, FAILED_STRING, "" );
 		return;
 #endif
 
     if( strlen( charname ) == 0 ){
-        lssproto_CreateNewChar_send(fd,FAILED, "0 length name\n");
+        lssproto_CreateNewChar_send(fd,FAILED_STRING, "0 length name\n");
         return;
     }else if( strlen(charname) >= 32 ){
-        lssproto_CreateNewChar_send(fd,FAILED, "Too long charname\n");
+        lssproto_CreateNewChar_send(fd,FAILED_STRING, "Too long charname\n");
         return;
     // Nuke start 0711: Avoid naming as WAEI
     }else if (strstr(charname,"華義")  
@@ -163,7 +163,7 @@ void lssproto_CreateNewChar_recv( int fd,int dataplacenum,char* charname,
 	print(" name_WAEI_IP:%d.%d.%d.%d ck:%d ",a,b,c,d,ck );
                                                                                         
 	if( !ck ) {
-		lssproto_CreateNewChar_send(fd,FAILED, "Invalid charname\n");
+		lssproto_CreateNewChar_send(fd,FAILED_STRING, "Invalid charname\n");
 		return;
 	}
     }
@@ -182,7 +182,7 @@ void lssproto_CreateNewChar_recv( int fd,int dataplacenum,char* charname,
                 	if (((unsigned char)charname[i]>=0xa1)&&((unsigned char)charname[i]<=0xfe)) ach=1;
                 }
 	}
-	if (ach) { lssproto_CreateNewChar_send(fd,FAILED, "Error in Chinese\n"); return; }
+	if (ach) { lssproto_CreateNewChar_send(fd,FAILED_STRING, "Error in Chinese\n"); return; }
         // Nuke end
     }
     // Nuke end
@@ -202,11 +202,11 @@ void lssproto_CharLogin_recv( int fd,char* charname )
     if( CONNECT_isCLI( fd ) == FALSE )return;
     print( "Attempt to login: charaname=%s\n", charname);
     if( charname[0] == '\0' ){
-        lssproto_CharLogin_send( fd, FAILED, "Can't access char have no name\n" );
+        lssproto_CharLogin_send( fd, FAILED_STRING, "Can't access char have no name\n" );
         return;
     }
     if( CONNECT_isNOTLOGIN(fd) == FALSE ){
-        lssproto_CharLogin_send( fd, FAILED, "Already Logged in\n" );
+        lssproto_CharLogin_send( fd, FAILED_STRING, "Already Logged in\n" );
         return;
     }
     CONNECT_setCharname( fd, charname );
@@ -239,7 +239,7 @@ void lssproto_CharLogout_recv( int fd, int flg)
 
     if( CONNECT_isCLI( fd ) == FALSE )return;
     if( CONNECT_isLOGIN(fd) == FALSE ){
-        lssproto_CharLogout_send( fd, FAILED, "Not Logged in\n" );
+        lssproto_CharLogout_send( fd, FAILED_STRING, "Not Logged in\n" );
         return;
     }
 
@@ -349,7 +349,7 @@ void lssproto_CharDelete_recv( int fd , char* charname)
 
     if( CONNECT_isCLI( fd ) == FALSE )return;
     if( CONNECT_isNOTLOGIN( fd ) == FALSE ){
-        lssproto_CharDelete_send( fd, FAILED, "Already Logged in\n" );
+        lssproto_CharDelete_send( fd, FAILED_STRING, "Already Logged in\n" );
         return;
     }
     CONNECT_getCdkey( fd, cdkey, sizeof(cdkey));
@@ -380,7 +380,7 @@ void lssproto_CharList_recv( int fd )
     if( CONNECT_isCLI( fd ) == FALSE )return;
 
     if( CONNECT_isNOTLOGIN( fd ) == FALSE ){
-        lssproto_CharList_send( fd, FAILED, "Already Logged in\n" );
+        lssproto_CharList_send( fd, FAILED_STRING, "Already Logged in\n" );
         return;
     }
 
@@ -393,7 +393,7 @@ void lssproto_CharList_recv( int fd )
 		for( i=0; i<playernum; i++){
 			if( !CHAR_CHECKINDEX( i) )continue;
 			if( !strcmp( CHAR_getChar( i, CHAR_CDKEY), cdkey) ){
-				lssproto_CharList_send( fd, FAILED, "-1" );
+				lssproto_CharList_send( fd, FAILED_STRING, "-1" );
 				CONNECT_setState( fd, NOTLOGIN );
 				return;
 			}
@@ -834,7 +834,7 @@ void lssproto_TK_recv( int fd,int x, int y,char* message,int color, int area )
 void lssproto_M_recv( int fd, int fl, int x1, int y1 , int x2, int y2 )
 {
     char*   mapdata;
-    RECT    seek={x1,y1,x2-x1,y2-y1},ret;
+    RECT_SA    seek={x1,y1,x2-x1,y2-y1},ret;
     CHECKFD;
 
     mapdata = MAP_getdataFromRECT(fl,&seek,&ret);

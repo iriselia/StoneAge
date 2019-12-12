@@ -1,7 +1,11 @@
 #include "version.h"
 #include <signal.h>
 #include <errno.h>
+
+#if PLATFORM_WINDOWS
+#else
 #include <unistd.h>
+#endif
 
 #include <stdio.h>
 
@@ -84,11 +88,18 @@ void sigshutdown( int number )
     
 
     signal( SIGINT , SIG_IGN );
-    signal( SIGQUIT, SIG_IGN );
+// TODO: Fix signals
+#if PLATFORM_WINDOWS
+#else
+	signal( SIGQUIT, SIG_IGN );
     signal( SIGKILL, SIG_IGN );
-    signal( SIGSEGV, SIG_IGN );
-    signal( SIGPIPE, SIG_IGN );
-    signal( SIGTERM, SIG_IGN );
+#endif
+	signal( SIGSEGV, SIG_IGN );
+#if PLATFORM_WINDOWS
+#else
+	signal(SIGPIPE, SIG_IGN);
+#endif
+	signal( SIGTERM, SIG_IGN );
 
 
     shutdownProgram();
@@ -103,16 +114,29 @@ void signalset( void )
     print("\nCoolFish Get Signal..\n");
 
 	print("SIGINT:%d\n", SIGINT);
+// TODO: Fix signals
+#if PLATFORM_WINDOWS
+#else
 	print("SIGQUIT:%d\n", SIGQUIT);
 	print("SIGKILL:%d\n", SIGKILL);
+#endif
 	print("SIGSEGV:%d\n", SIGSEGV);
+#if PLATFORM_WINDOWS
+#else
 	print("SIGPIPE:%d\n", SIGPIPE);
+#endif
 	print("SIGTERM:%d\n", SIGTERM);
     
     signal( SIGINT , sigshutdown );
+#if PLATFORM_WINDOWS
+#else
     signal( SIGQUIT, sigshutdown );
     signal( SIGKILL, sigshutdown );
+#endif
     signal( SIGSEGV, sigshutdown );
+#if PLATFORM_WINDOWS
+#else
     signal( SIGPIPE, SIG_IGN );
+#endif
     signal( SIGTERM, sigshutdown );
 }

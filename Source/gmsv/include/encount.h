@@ -31,7 +31,7 @@ typedef struct tagENCOUNT_Table
 	int					event_now;			
 	int					event_end;
 	int					enemy_group;		// 怪物的group 編號
-    RECT                rect;
+    RECT_SA                rect;
 }ENCOUNT_Table;
 
 ENCOUNT_Table           *ENCOUNT_table;

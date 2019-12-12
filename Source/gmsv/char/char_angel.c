@@ -6,7 +6,10 @@
 #include <sys/stat.h>   // shan
 #include <ctype.h>
 #include <time.h>
+#if PLATFORM_WINDOWS
+#else
 #include <sys/time.h>
+#endif
 #include <errno.h>
 #include "common.h"
 #include "char_base.h"

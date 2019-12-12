@@ -438,7 +438,9 @@ static BOOL NPC_SimpleShopProcessSellMsg(char *msg, int shopindex,
     if( ! NPC_Util_moveItemToChar( shopindex,itemind,TRUE ) ){
         return -1;
     }
-    NPC_Util_RemoveItemByID(shopindex,id,FALSE);
+
+	//TODO: FIX SHOP
+    //NPC_Util_RemoveItemByID(shopindex,id,FALSE);
     return 1;
 }
 
@@ -515,7 +517,8 @@ static BOOL NPC_LimitBuyInShopProcessSellMsg(char *msg,
 	}
 
     /* 買い取ったアイテムを消去 */
-    NPC_Util_RemoveItemByID(shopindex,id,FALSE);
+	//TODO: FIX SHOP
+    //NPC_Util_RemoveItemByID(shopindex,id,FALSE);
 
     return 1;
 
@@ -670,7 +673,8 @@ static BOOL NPC_SimpleShopFillItem( int meindex, char *npcarg )
         if( getStringFromIndexWithDelim( token,",",i,buf,sizeof(buf) )){
             itemid = atoi( buf );
             if( itemid == 0 ){
-                NPC_Util_ReleaseHaveItemAll(meindex);
+				//TODO: FIX SHOP
+                //NPC_Util_ReleaseHaveItemAll(meindex);
                 return FALSE;
             }
             num=NPC_Util_countHaveItem(meindex,itemid);
@@ -680,7 +684,8 @@ static BOOL NPC_SimpleShopFillItem( int meindex, char *npcarg )
                 NPC_Util_createItemToChar( meindex,itemid, FALSE);
 
             }else if( num>=2 ){ /* もちすぎの場合削除 */
-                NPC_Util_RemoveItemByID(meindex,itemid,FALSE);
+				//TODO: FIX SHOP
+                //NPC_Util_RemoveItemByID(meindex,itemid,FALSE);
             }
         }else{
             break;

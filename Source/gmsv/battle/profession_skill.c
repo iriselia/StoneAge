@@ -291,14 +291,14 @@ INLINE char* PROFESSION_SKILL_getChar( int index, PROFESSION_SKILL_DATACHAR elem
 	return PROFESSION_skill[index].string[element].string;
 }
 
-INLINE BOOL PROFESSION_SKILL_setChar( int index ,PROFESSION_SKILL_DATACHAR element, char* new )
+INLINE BOOL PROFESSION_SKILL_setChar( int index ,PROFESSION_SKILL_DATACHAR element, char* input )
 {
     if(!PROFESSION_SKILL_CHECKINDEX(index))return FALSE;
     if(!PROFESSION_SKILL_CHECKCHARDATAINDEX(element))return FALSE;
 
     strcpysafe( PROFESSION_skill[index].string[element].string,
                 sizeof(PROFESSION_skill[index].string[element].string),
-                new );
+                input );
     return TRUE;
 }
 

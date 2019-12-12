@@ -1468,15 +1468,15 @@ INLINE int CHAR_setWorkInt( int index ,CHAR_WORKDATAINT element, int data);
 #define		CHAR_getChar( index, elem) _CHAR_getChar( __FILE__, __LINE__, index, elem)
 INLINE char* _CHAR_getChar( char *file, int line, int index ,CHAR_DATACHAR element );
 #define		CHAR_setChar( index, elem, n) _CHAR_setChar( __FILE__, __LINE__, index, elem, n)
-INLINE BOOL _CHAR_setChar( char *file, int line, int index ,CHAR_DATACHAR element, char* new );
+INLINE BOOL _CHAR_setChar( char *file, int line, int index ,CHAR_DATACHAR element, char* input );
 #define		CHAR_getFlg( index, elem) _CHAR_getFlg( __FILE__, __LINE__, index, elem)
 INLINE BOOL _CHAR_getFlg( char *file, int line, int index ,CHAR_DATAFLG element );
 #define		CHAR_setFlg( index, elem, n) _CHAR_setFlg( __FILE__, __LINE__, index, elem, n)
-INLINE char _CHAR_setFlg( char *file, int line, int index , CHAR_DATACHAR element, int newdata );
+INLINE char _CHAR_setFlg( char *file, int line, int index , CHAR_DATACHAR element, int input );
 #define		CHAR_getWorkChar( index, elem) _CHAR_getWorkChar( __FILE__, __LINE__, index, elem)
 INLINE char * _CHAR_getWorkChar( char *file, int line, int index, CHAR_WORKDATACHAR element );
 #define		CHAR_setWorkChar( index, elem, n) _CHAR_setWorkChar( __FILE__, __LINE__, index, elem, n)
-INLINE BOOL _CHAR_setWorkChar( char *file, int line, int index, CHAR_WORKDATACHAR element, char * new);
+INLINE BOOL _CHAR_setWorkChar( char *file, int line, int index, CHAR_WORKDATACHAR element, char * input);
 
 #define		CHAR_getItemIndex( index, iindex) _CHAR_getItemIndex( __FILE__, __LINE__, index, iindex)
 INLINE int _CHAR_getItemIndex( char *file, int line, int charaindex, int ti);
@@ -1496,11 +1496,11 @@ INLINE int CHAR_getOthersMaxNum( void );
 INLINE BOOL CHAR_getCharUse( int index );
 INLINE CHAR_HaveSkill* CHAR_getCharHaveSkill( int index,int sindex );
 INLINE int  CHAR_getCharHaveTitle( int index,int tindex );
-INLINE int CHAR_setCharHaveTitle( int charaindex,int tindex, int new );
+INLINE int CHAR_setCharHaveTitle( int charaindex,int tindex, int input );
 INLINE int CHAR_getCharPet( int charaindex,int petindex );
-INLINE int CHAR_setCharPet( int charaindex,int petindex, int new );
+INLINE int CHAR_setCharPet( int charaindex,int petindex, int input );
 INLINE int CHAR_getCharPoolPet( int charaindex,int petindex );
-INLINE int CHAR_setCharPoolPet( int charaindex,int petindex, int new );
+INLINE int CHAR_setCharPoolPet( int charaindex,int petindex, int input );
 int CHAR_getCharPetElement( int charaindex );
 int CHAR_getCharPoolPetElement( int charaindex );
 int CHAR_getCharPoolItemIndexElement( int charaindex );
@@ -1535,7 +1535,7 @@ char *CHAR_makePetStringFromPetIndex( int petindex);
 #define CHAR_getPetSkillElement( petindex) _CHAR_getPetSkillElement( __FILE__, __LINE__, petindex)
 int _CHAR_getPetSkillElement( char *file, int line, int petindex );
 #define	CHAR_setPetSkill( petindex, havepetskillindex, n) _CHAR_setPetSkill( __FILE__, __LINE__, petindex, havepetskillindex, n)
-INLINE int _CHAR_setPetSkill( char *file, int line, int petindex,int havepetskillindex, int new );
+INLINE int _CHAR_setPetSkill( char *file, int line, int petindex,int havepetskillindex, int input );
 #define		CHAR_getPetSkill( petindex, havepetskillindex) _CHAR_getPetSkill( __FILE__, __LINE__, petindex, havepetskillindex)
 INLINE int _CHAR_getPetSkill( char *file, int line, int petindex,int havepetskillindex );
 #define SETFLG(a,b,c,d,e,f,g,h) (((a)<<0)+((b)<<1)+((c)<<2)+((d)<<3)+((e)<<4)+((f)<<5)+((g)<<6)+((h)<<7))
@@ -1670,13 +1670,13 @@ int CHAR_getMaxHaveGold( int charaindex);
 #ifdef _CHAR_PROFESSION			// WON ADD 人物職業
 
 int CHAR_getCharSkill( int index,int sindex );
-int CHAR_setCharSkill( int index,int sindex,int new );
+int CHAR_setCharSkill( int index,int sindex,int input );
 #define CHAR_CHECK_PROFESSION_SKILLINDEX( skillindex) _CHAR_CHECK_PROFESSION_SKILLINDEX( __FILE__, __LINE__, skillindex)
 INLINE BOOL _CHAR_CHECK_PROFESSION_SKILLINDEX( char *file, int line, int skillindex );
 #define	PROFESSION_SKILL_getSkill( charaindex, skillindex) _PROFESSION_SKILL_getSkill( __FILE__, __LINE__, charaindex, skillindex)
 INLINE int _PROFESSION_SKILL_getSkill( char *file, int line, int charaindex, int skillindex );
 #define	PROFESSION_SKILL_setSkill( charaindex, skillindex, n) _PROFESSION_SKILL_setSkill( __FILE__, __LINE__, charaindex, skillindex, n)
-INLINE int _PROFESSION_SKILL_setSkill( char *file, int line, int charaindex,int skillindex, int new );
+INLINE int _PROFESSION_SKILL_setSkill( char *file, int line, int charaindex,int skillindex, int input);
 #define PROFESSION_SKILL_getSkillElement(charaindex) _PROFESSION_SKILL_getSkillElement( __FILE__, __LINE__, charaindex)
 int _PROFESSION_SKILL_getSkillElement( char *file, int line, int charaindex );
 

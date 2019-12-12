@@ -86,8 +86,8 @@ BOOL MAP_initReadMap( char* maptilefile , char* mapdir );
 BOOL MAP_initMapArray( int   num );
 void    MAP_endMapArray( void );
 
-char* MAP_getdataFromRECT( int floor, RECT* seekr, RECT* realr );
-char *MAP_getChecksumFromRECT( int floor, RECT* seekr, RECT* realr,
+char* MAP_getdataFromRECT( int floor, RECT_SA* seekr, RECT_SA* realr );
+char *MAP_getChecksumFromRECT( int floor, RECT_SA* seekr, RECT_SA* realr,
 								int *tilesum, int *objsum, int *eventsum );
 
 BOOL MAP_checkCoordinates( int mapid, int x, int y );

@@ -80,24 +80,30 @@ static void NPC_LuckyMan_selectWindow( int meindex, int toindex, int num,char *m
 
 	switch( num){
 		case 1:
-					"\n\n%s",msg
-				);
+		sprintf(token,
+			"�@�@�@�@�@�@�@☆今日的運勢☆�@"
+			"\n\n%s", msg
+		);
 				buttontype = WINDOW_BUTTONTYPE_OK;
 				windowtype = WINDOW_MESSAGETYPE_MESSAGE;
 				windowno = CHAR_WINDOWTYPE_WINDOWPETSHOP_START; 
 		break;
 	
 		case 2:
-					"\n\n%s",msg
-				);
+		sprintf(token,
+			"�@�@�@�@�@�@�@�@☆占卜師☆�@"
+			"\n\n%s", msg
+		);
 				buttontype = WINDOW_BUTTONTYPE_YESNO;
 				windowtype = WINDOW_MESSAGETYPE_MESSAGE;
 				windowno = CHAR_WINDOWTYPE_WINDOWPETSHOP_START; 
 		break;
 
 		case 3:
-					"\n\n%s",msg
-				);
+		sprintf(token,
+			"�@�@�@�@�@�@�@�@☆占卜師☆�@"
+			"\n\n%s", msg
+		);
 				buttontype = WINDOW_BUTTONTYPE_OK;
 				windowtype = WINDOW_MESSAGETYPE_MESSAGE;
 				windowno = CHAR_WINDOWTYPE_WINDOWPETSHOP_START; 

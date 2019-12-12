@@ -79,7 +79,7 @@ EXTERN int             NPC_create_readindex;
 INLINE int NPC_CHECKCREATEINDEX(int index);
 
 BOOL NPC_isBoundarySet( int createindex );
-BOOL NPC_createGetRECT( int createindex,RECT*   r );
+BOOL NPC_createGetRECT( int createindex,RECT_SA*   r );
 BOOL NPC_readNPCCreateFiles( char* topdirectory ,int createsize);
 int NPC_getCreateInt( int index , NPC_CREATEINT element );
 

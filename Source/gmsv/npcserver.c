@@ -1,15 +1,19 @@
 #include <stdio.h>
+#if PLATFORM_WINDOWS
+#else
 #include <strings.h>
-#include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/time.h>
-#include <sys/stat.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
-#include <stdlib.h>
 #include <unistd.h>
-#include <fcntl.h>
 #include <netdb.h>
+#endif
+
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <stdlib.h>
+#include <fcntl.h>
 #include <errno.h>
 #include "autil.h"
 #include "util.h"

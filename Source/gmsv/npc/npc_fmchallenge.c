@@ -1,3 +1,5 @@
+#if 0 // Replaced by npc_scheduleman.c
+
 #include "version.h"
 #include <time.h>
 #include "char.h"
@@ -5,7 +7,7 @@
 #include "lssproto_serv.h"
 #include "npcutil.h"
 #include "handletime.h"
-#include "npc_fmchallenge.h"
+//#include "npc_fmchallenge.h"
 #include "family.h"
 
 // 全部的家族 pk 賽程
@@ -774,3 +776,5 @@ void NPC_DETAIL_gendata(int meindex, char *buf, int size, int dueltime)
     print("scheduleman: gen DETAIL error (%d).",dueltime);
   }
 }
+
+#endif

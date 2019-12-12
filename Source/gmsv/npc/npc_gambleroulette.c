@@ -179,7 +179,7 @@ void NPC_Gamble_RouletteLoop( int meindex)
 
 static void Gamble_Roulette_walk( int meindex)
 {	
-	POINT	start, end;
+	POINT_SA	start, end;
 	int dir;
 	int ret;
 	int i,run_num = 0;

@@ -2,8 +2,13 @@
 #include "version.h"
 #include <stdio.h>
 #include <string.h>
+
+#if PLATFORM_WINDOWS
+#include "strings.h"
+#else
 #include <strings.h>
 #include <unistd.h>
+#endif
 
 #include "util.h"
 //#include "configfile.h"
@@ -216,13 +221,13 @@ typedef struct tagReadConf
 
 ReadConf readconf[]=
 {
-    { "debuglevel"      , NULL ,0 , (void*)&config.debuglevel      ,CHAR},
+    { "debuglevel"      , NULL ,0 , (void*)&config.debuglevel      ,CHAR_SA},
 
-    { "usememoryunit"   , NULL ,0 , (void*)&config.usememoryunit   ,INT},
-    { "usememoryunitnum", NULL ,0 , (void*)&config.usememoryunitnum,INT},
+    { "usememoryunit"   , NULL ,0 , (void*)&config.usememoryunit   ,INT_SA},
+    { "usememoryunitnum", NULL ,0 , (void*)&config.usememoryunitnum,INT_SA},
 
     { "acserv",			config.asname,sizeof(config.asname) ,NULL , 0},
-    { "acservport",		NULL ,0 , (void*)&config.acservport     ,SHORT},
+    { "acservport",		NULL ,0 , (void*)&config.acservport     ,SHORT_SA},
     { "acpasswd",		config.acpasswd,sizeof( config.acpasswd),NULL,0},
     { "gameservname",	config.gsnamefromas,sizeof(config.gsnamefromas),
      NULL,0},
@@ -232,30 +237,30 @@ ReadConf readconf[]=
 #ifdef _SERVICE    
     // Terry 2001/10/03 service ap
     { "apid", config.apid, sizeof(config.apid), NULL, 0},
-		{ "apport",	NULL ,0 ,(void*)&config.apport ,SHORT},
-    { "looptime",NULL,0,(void*)&config.looptime,INT},
-    { "enableservice",NULL,0,(void*)&config.enableservice,INT},
+		{ "apport",	NULL ,0 ,(void*)&config.apport ,SHORT_SA},
+    { "looptime",NULL,0,(void*)&config.looptime,INT_SA},
+    { "enableservice",NULL,0,(void*)&config.enableservice,INT_SA},
 #endif    
-    { "allowmanorpk", NULL, 0, (void*)&config.allowmanorpk, SHORT},
+    { "allowmanorpk", NULL, 0, (void*)&config.allowmanorpk, SHORT_SA},
 
-    { "port",			NULL ,0 , (void*)&config.port           ,SHORT},
-    { "servernumber",	NULL ,0 , (void*)&config.servernumber           ,INT},
+    { "port",			NULL ,0 , (void*)&config.port           ,SHORT_SA},
+    { "servernumber",	NULL ,0 , (void*)&config.servernumber           ,INT_SA},
 
-    { "reuseaddr",			NULL ,0 , (void*)&config.reuseaddr  ,		INT},
-    { "nodelay",			NULL , 0 , (void*)&config.do_nodelay ,		INT},
-    { "log_write_time", 	NULL, 0 , (void*)&config.log_write_time,	INT},
-    { "log_io_time", 		NULL, 0 , (void*)&config.log_io_time, 		INT},
-    { "log_game_time",		NULL, 0 , (void*)&config.log_game_time,		INT},
-    { "log_netloop_faster", NULL,0,(void*)&config.log_netloop_faster,	INT},
-    { "saacwritenum",		NULL,0,(void*)&config.saacwritenum, 		INT},
-    { "saacreadnum",		NULL,0,(void*)&config.saacreadnum, 			INT},
-    { "fdnum",				NULL ,0 , (void*)&config.fdnum,				SHORT},
-    { "petnum",				NULL ,0 , (void*)&config.petcharnum,		INT},
-    { "othercharnum",		NULL ,0 , (void*)&config.othercharnum,		INT},
+    { "reuseaddr",			NULL ,0 , (void*)&config.reuseaddr  ,		INT_SA},
+    { "nodelay",			NULL , 0 , (void*)&config.do_nodelay ,		INT_SA},
+    { "log_write_time", 	NULL, 0 , (void*)&config.log_write_time,	INT_SA},
+    { "log_io_time", 		NULL, 0 , (void*)&config.log_io_time, 		INT_SA},
+    { "log_game_time",		NULL, 0 , (void*)&config.log_game_time,		INT_SA},
+    { "log_netloop_faster", NULL,0,(void*)&config.log_netloop_faster,	INT_SA},
+    { "saacwritenum",		NULL,0,(void*)&config.saacwritenum, 		INT_SA},
+    { "saacreadnum",		NULL,0,(void*)&config.saacreadnum, 			INT_SA},
+    { "fdnum",				NULL ,0 , (void*)&config.fdnum,				SHORT_SA},
+    { "petnum",				NULL ,0 , (void*)&config.petcharnum,		INT_SA},
+    { "othercharnum",		NULL ,0 , (void*)&config.othercharnum,		INT_SA},
 
-    { "objnum",			NULL ,0 , (void*)&config.objnum,				INT},
-    { "itemnum",		NULL ,0 , (void*)&config.itemnum,				INT},
-    { "battlenum",		NULL ,0 , (void*)&config.battlenum,				INT},
+    { "objnum",			NULL ,0 , (void*)&config.objnum,				INT_SA},
+    { "itemnum",		NULL ,0 , (void*)&config.itemnum,				INT_SA},
+    { "battlenum",		NULL ,0 , (void*)&config.battlenum,				INT_SA},
 
     { "topdir"          , config.topdir,sizeof(config.topdir),NULL,0},
     { "mapdir"          , config.mapdir,sizeof(config.mapdir),NULL,0},
@@ -313,31 +318,31 @@ ReadConf readconf[]=
 #ifdef _STORECHAR
     { "storechar", config.storechar, sizeof( config.storechar),NULL,0},
 #endif
-    { "chatmagiccdkeycheck",  NULL,0, &config.chatmagiccdkeycheck,INT},
-    { "filesearchnum",  NULL,0, &config.filesearchnum,INT},
-    { "npctemplatenum",  NULL,0, &config.npctemplatenum,INT},
-    { "npccreatenum",    NULL,0, &config.npccreatenum,INT},
-    { "walkinterval" ,NULL,0,(void*)&config.walksendinterval,INT},
-    { "CAinterval" ,NULL,0,(void*)&config.CAsendinterval_ms,INT},
-    { "CDinterval" ,NULL,0,(void*)&config.CDsendinterval_ms,INT},
-    { "CharSaveinterval" ,NULL,0,(void*)&config.CharSavesendinterval,INT},
-    { "Onelooptime" ,NULL,0,(void*)&config.Onelooptime_ms,INT},
-    { "Petdeletetime" ,NULL,0,(void*)&config.Petdeletetime,INT},
-    { "Itemdeletetime" ,NULL,0,(void*)&config.Itemdeletetime,INT},
+    { "chatmagiccdkeycheck",  NULL,0, &config.chatmagiccdkeycheck,INT_SA},
+    { "filesearchnum",  NULL,0, &config.filesearchnum,INT_SA},
+    { "npctemplatenum",  NULL,0, &config.npctemplatenum,INT_SA},
+    { "npccreatenum",    NULL,0, &config.npccreatenum,INT_SA},
+    { "walkinterval" ,NULL,0,(void*)&config.walksendinterval,INT_SA},
+    { "CAinterval" ,NULL,0,(void*)&config.CAsendinterval_ms,INT_SA},
+    { "CDinterval" ,NULL,0,(void*)&config.CDsendinterval_ms,INT_SA},
+    { "CharSaveinterval" ,NULL,0,(void*)&config.CharSavesendinterval,INT_SA},
+    { "Onelooptime" ,NULL,0,(void*)&config.Onelooptime_ms,INT_SA},
+    { "Petdeletetime" ,NULL,0,(void*)&config.Petdeletetime,INT_SA},
+    { "Itemdeletetime" ,NULL,0,(void*)&config.Itemdeletetime,INT_SA},
 	 { "addressbookoffmesgnum" ,NULL,0,
-      (void*)&config.addressbookoffmsgnum,INT},
+      (void*)&config.addressbookoffmsgnum,INT_SA},
 
     { "protocolreadfrequency" ,NULL,0,
-      (void*)&config.protocolreadfrequency,INT},
+      (void*)&config.protocolreadfrequency,INT_SA},
 
-    { "allowerrornum" ,NULL,0,(void*)&config.allowerrornum,INT},
-    { "loghour" ,NULL,0,(void*)&config.loghour,INT},
-    { "battledebugmsg" ,NULL,0,(void*)&config.battledebugmsg,INT},
+    { "allowerrornum" ,NULL,0,(void*)&config.allowerrornum,INT_SA},
+    { "loghour" ,NULL,0,(void*)&config.loghour,INT_SA},
+    { "battledebugmsg" ,NULL,0,(void*)&config.battledebugmsg,INT_SA},
     //ttom add because the second had
-    { "encodekey" ,NULL,0,(void*)&config.encodekey,INT},
-    { "acwritesize" ,NULL,0,(void*)&config.acwritesize,INT},
-    { "acwbsize" ,NULL,0,(void*)&config.acwbsize,INT},
-    { "erruser_down" ,NULL,0,(void*)&config.ErrUserDownFlg,INT},    
+    { "encodekey" ,NULL,0,(void*)&config.encodekey,INT_SA},
+    { "acwritesize" ,NULL,0,(void*)&config.acwritesize,INT_SA},
+    { "acwbsize" ,NULL,0,(void*)&config.acwbsize,INT_SA},
+    { "erruser_down" ,NULL,0,(void*)&config.ErrUserDownFlg,INT_SA},    
     //ttom end
 #ifdef _AUCTIONEER
     { "auctiondir" , config.auctiondir, sizeof(config.auctiondir),NULL,0},
@@ -347,11 +352,11 @@ ReadConf readconf[]=
 #endif
 #ifdef _M_SERVER
     { "msname",		config.msname,sizeof(config.msname) ,NULL , 0},
-    { "msport",		NULL ,0 , (void*)&config.msport     ,SHORT},
+    { "msport",		NULL ,0 , (void*)&config.msport     ,SHORT_SA},
 #endif
 #ifdef _NPCSERVER_NEW
     { "npcaddress",		config.nsaddress, sizeof(config.nsaddress) ,NULL , 0},
-    { "nsport",		NULL, 0 , (void*)&config.nsport     ,SHORT},
+    { "nsport",		NULL, 0 , (void*)&config.nsport     ,SHORT_SA},
 #endif
 
 #ifdef _PROFESSION_SKILL			// WON ADD 人物職業技能
@@ -363,11 +368,11 @@ ReadConf readconf[]=
 #endif
 
 #ifdef _MUSEUM
-    { "museum",			NULL , 0 , (void*)&config.museum ,		INT},
+    { "museum",			NULL , 0 , (void*)&config.museum ,		INT_SA},
 #endif
 
 #ifdef _DEL_DROP_GOLD
-	{ "Golddeletetime" ,NULL,0,(void*)&config.Golddeletetime,	INT},
+	{ "Golddeletetime" ,NULL,0,(void*)&config.Golddeletetime,	INT_SA},
 #endif
 
 };
@@ -1760,16 +1765,16 @@ void lastConfig( void )
 void substitutePointerFromType( void* to , CTYPE type ,double value)
 {
     switch( type  ){
-    case CHAR:
+    case CHAR_SA:
         *(char*)to = (char)value;
         break;
-    case SHORT:
+    case SHORT_SA:
         *(short*)to = (short)value;
         break;
-    case INT:
+    case INT_SA:
         *(int*)to = (int)value;
         break;
-    case DOUBLE:
+    case DOUBLE_SA:
         *(double*)to = (double)value;
         break;
     }

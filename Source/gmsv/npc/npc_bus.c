@@ -359,7 +359,7 @@ void NPC_BusLoop( int meindex)
  **************************************/
 static void NPC_Bus_walk( int meindex)
 {	
-	POINT	start, end;
+	POINT_SA	start, end;
 	int dir;
 	int ret;
 	int i;

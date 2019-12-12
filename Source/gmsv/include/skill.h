@@ -83,14 +83,17 @@ typedef enum
 typedef struct tagSkill
 {
     int         data[SKILL_DATAINTNUM];
+#if PLATFORM_WINDOWS
+#else
     STRING32    string[SKILL_DATACHARNUM];
+#endif
 }Skill;
 
 char* SKILL_makeStringFromSkillData( Skill* sk );
 BOOL  SKILL_makeSkillFromStringToArg( char* src, Skill* sk );
 
 int SKILL_getInt( Skill* skill, int element);
-int SKILL_setInt( Skill* skill, int element, int new);
+int SKILL_setInt( Skill* skill, int element, int newInt);
 
 #ifdef _CHAR_PROFESSION			// WON ADD 人物職業
 char* SKILL_makeSkillStatusString( Skill* skill, int charaindex, int skill_num );

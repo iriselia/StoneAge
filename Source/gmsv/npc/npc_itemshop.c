@@ -1470,8 +1470,12 @@ void NPC_ExpressmanCheck(int meindex,int talker)
        	return;
 	}
 	NPC_Util_GetStrFromStrWithDelim( argstr, "main_msg", buf, sizeof( buf));
-					,CHAR_getChar(meindex,CHAR_NAME),buf);
-	lssproto_WN_send( fd, WINDOW_MESSAGETYPE_SELECT, 
+	sprintf(token,
+		"4\n�@�@�@�@�@�@�@%s\n\n%s"
+		"\n\n�@�@�@�@�@＜  打工  ＞�@�@�@"
+		"\n\n�@�@�@�@  ＜交付行李＞"
+		, CHAR_getChar(meindex, CHAR_NAME), buf);
+	lssproto_WN_send( fd, WINDOW_MESSAGETYPE_SELECT,
 			WINDOW_BUTTONTYPE_CANCEL, 
 			CHAR_WINDOWTYPE_WINDOWITEMSHOP_EXPRESS,
 			CHAR_getWorkInt( meindex, CHAR_WORKOBJINDEX),

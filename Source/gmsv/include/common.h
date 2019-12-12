@@ -3,12 +3,25 @@
 
 #include <stdio.h>
 
+#if PLATFORM_WINDOWS
+#if defined(_WIN32) || defined(_WIN64)
+#define snprintf _snprintf
+#define vsnprintf _vsnprintf
+#define strcasecmp _stricmp
+#define strncasecmp _strnicmp
+#endif
+#else
+#endif
+
 /* MACROS */
 #define RETURNFALSEIFFALSE(x) if(!x)return FALSE;
 #define EXITWITHEXITCODEIFFALSE(x,code) if(!x)exit(code);
 #ifdef __GNUC__
 #define print(format,arg...) fprintf( stderr, format ,##arg)
 #define fprint(format,arg...) fprintf( stderr, "%s:%d " format , __FILE__ , __LINE__ , ##arg)
+#else
+#define print(...) fprintf (stderr, __VA_ARGS__)
+#define fprint(format, ...) fprintf( stderr, "%s:%d " format , __FILE__ , __LINE__ , __VA_ARGS__)
 #endif
 #define debug(x,y) fprintf( stderr, #x " = %" #y "\n" , x)
 #define arraysizeof( x ) (sizeof(x)/sizeof(x[0]))
@@ -21,13 +34,17 @@
 #define SPACE ' '
 
 /*下の define より安全にする    */
-/*#define min( x,y ) ((x)>(y)?(y):(x))
-  #define max( x,y ) ((x)>(y)?(x):(y))*/
+#if PLATFORM_WINDOWS
+#define min( x,y ) ((x)>(y)?(y):(x))
+#define max( x,y ) ((x)>(y)?(x):(y))
+#else
 #define min( x,y ) ({typeof(x) __x=(x),__y=(y);(__x < __y) ? __x : __y; })
 #define max( x,y ) ({typeof(x) __x=(x),__y=(y);(__x < __y) ? __y : __x; })
-#define swap( x,y )({typeof(x) __x=(y);(y)=(x);(x)=__x;})
-#define SUCCESSFUL "successful"
-#define FAILED "failed"
+#endif
+#define swap( x,y ) {typeof(x) __x=(y);(y)=(x);(x)=__x;}
+#define swapT( T, x,y ) {T __x=(y);(y)=(x);(x)=__x;}
+#define SUCCESSFUL_STRING "successful"
+#define FAILED_STRING "failed"
 
 #ifdef _BAD_PLAYER             // WON ADD 送壞玩家去關
 #define BADPLAYER "badplayer"
@@ -55,10 +72,20 @@ extern int snprintf (char* , size_t, const char* , ...)
 
 #define ON  1
 #define OFF 0
+#if PLATFORM_WINDOWS
+#ifndef _WINDEF_
+typedef int BOOL;
+#endif
+#else
 #define BOOL int
+#endif
 #define FALSE 0
 #define TRUE  1
+#if PLATFORM_WINDOWS
+#define INLINE
+#else
 #define INLINE inline
+#endif
 #define USE_MTIO 0
 
 #endif

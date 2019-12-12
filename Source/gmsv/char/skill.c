@@ -18,10 +18,11 @@ static SKILL_intDataSetting SKILL_setint[SKILL_DATAINTNUM]={
     {"id"},           /*  SKILL_ID		*/
 };
 
+#if PLATFORM_WINDOWS
+#else
 static SKILL_charDataSetting SKILL_setchar[SKILL_DATACHARNUM]={
 };
-
-
+#endif
 
 
 static char    SKILL_dataString[STRINGBUFSIZ];
@@ -44,6 +45,8 @@ char* SKILL_makeStringFromSkillData( Skill* sk )
         if( strlength > sizeof( SKILL_dataString ) )goto RETURN;
     }
 
+	// TODO: Skill string
+	/*
     for( i = 0 ; i < SKILL_DATACHARNUM ; i ++ ){
         char    linedata[128];
         char    escapebuffer[128];
@@ -59,6 +62,7 @@ char* SKILL_makeStringFromSkillData( Skill* sk )
         strlength += strlen( linedata );
         if( strlength > sizeof( SKILL_dataString ) )goto RETURN;
     }
+	*/
 
 RETURN:
     dchop( SKILL_dataString , NONCHAR_DELIMITER );
@@ -97,6 +101,9 @@ BOOL SKILL_makeSkillFromStringToArg( char* src, Skill* sk )
             }
         }
 
+		// TODO: skill data
+#if PLATFORM_WINDOWS
+#else
         for( i = 0 ; i < SKILL_DATACHARNUM ; i ++ ){
             if( strcmp(first ,SKILL_setchar[i].dumpskill) == 0 ){
                 strcpysafe( sk->string[i].string,
@@ -105,7 +112,7 @@ BOOL SKILL_makeSkillFromStringToArg( char* src, Skill* sk )
                 goto NEXT;
             }
         }
-
+#endif
         fprint( "??? : %s[%s]\n" , linebuf, first );
         
     NEXT:

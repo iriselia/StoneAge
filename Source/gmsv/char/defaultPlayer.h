@@ -1,5 +1,11 @@
 #include "version.h"
 
+#if PLATFORM_WINDOWS
+static Char    player =
+{
+	FALSE,      /*  use     どうでもいい*/
+};
+#else
 static Char    player=
 {
     FALSE,      /*  use     どうでもいい*/
@@ -318,6 +324,7 @@ static Char    player=
         SETFLG(0,0,0,0,0,0,0,1 ),
     }
 };
+#endif
 
 LevelUpPattern lvplayer00={ {{100,10},{200,10},{50,8}},9,11,10};
 LevelUpPattern lvplayer10={ {{100,10},{200,10},{50,8}},9,11,10};

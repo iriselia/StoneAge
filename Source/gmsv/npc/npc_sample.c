@@ -56,7 +56,7 @@ void NPC_SampleLoop( int index )
                                    CHAR_WHICHTYPE) == CHAR_TYPEPLAYER ){
 
                     int     dir;
-                    POINT   start,end;
+                    POINT_SA   start,end;
                     end.x = CHAR_getInt(OBJECT_getIndex(objindex),CHAR_X);
                     end.y = CHAR_getInt(OBJECT_getIndex(objindex),CHAR_Y);
                     start.x = x;

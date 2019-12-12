@@ -63,7 +63,7 @@ INLINE BOOL PETSKILL_CHECKINDEX( int index );
 INLINE int PETSKILL_getInt( int index, PETSKILL_DATAINT element);
 INLINE int PETSKILL_setInt( int index, PETSKILL_DATAINT element, int data);
 INLINE char* PETSKILL_getChar( int index, PETSKILL_DATACHAR element);
-INLINE BOOL PETSKILL_setChar( int index ,PETSKILL_DATACHAR element, char* new );
+INLINE BOOL PETSKILL_setChar( int index ,PETSKILL_DATACHAR element, char* input );
 int PETSKILL_getPetskillNum( void);
 
 #define		PETSKILL_GetArray( charaindex, havepetskill)	_PETSKILL_GetArray( __FILE__, __LINE__, charaindex, havepetskill)

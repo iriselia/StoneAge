@@ -2,7 +2,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#if PLATFORM_WINDOWS
+#else
 #include <strings.h>
+#endif
 #include <errno.h>
 #include "common.h"
 #include "char.h"

@@ -5,7 +5,11 @@
 #include <sys/stat.h>   // shan
 #include <ctype.h>
 #include <time.h>
+#if PLATFORM_WINDOWS
+#else
 #include <sys/time.h>
+#endif
+
 #include <errno.h>
 #include "common.h"
 #include "char_base.h"
@@ -253,12 +257,12 @@ void CHAR_createNewChar( int clifd, int dataplacenum, char* charname ,
 	memset(&ch,0,sizeof(Char));
 
 	if( !CHAR_checkPlayerImageNumber( imgno)) {
-		lssproto_CreateNewChar_send( clifd ,FAILED, "" );
+		lssproto_CreateNewChar_send( clifd ,FAILED_STRING, "" );
         CONNECT_setState( clifd, NOTLOGIN );
 		return;
 	}
 	if( !CHAR_checkFaceImageNumber( imgno, faceimgno)) {
-		lssproto_CreateNewChar_send( clifd ,FAILED, "" );
+		lssproto_CreateNewChar_send( clifd ,FAILED_STRING, "" );
         CONNECT_setState( clifd, NOTLOGIN );
 		return;
 	}
@@ -266,13 +270,13 @@ void CHAR_createNewChar( int clifd, int dataplacenum, char* charname ,
 	ch.data[CHAR_WALKINTERVAL] = getWalksendinterval();
 
 	if( CHAR_getInitElderPosition( &ch ,hometown) == FALSE ){
-		lssproto_CreateNewChar_send( clifd ,FAILED, "" );
+		lssproto_CreateNewChar_send( clifd ,FAILED_STRING, "" );
         CONNECT_setState( clifd, NOTLOGIN );
 		return;
 
 	}else if( MAP_checkCoordinates( ch.data[CHAR_FLOOR], ch.data[CHAR_X],
 									ch.data[CHAR_Y] ) == FALSE ){
-		lssproto_CreateNewChar_send( clifd ,FAILED, "");
+		lssproto_CreateNewChar_send( clifd ,FAILED_STRING, "");
         CONNECT_setState( clifd, NOTLOGIN );
 		return;
 	}
@@ -281,7 +285,7 @@ void CHAR_createNewChar( int clifd, int dataplacenum, char* charname ,
 				charname);
 
 	if( CHAR_getNewImagenumberFromEquip( imgno,0) == -1 ){
-		lssproto_CreateNewChar_send( clifd ,FAILED, "");
+		lssproto_CreateNewChar_send( clifd ,FAILED_STRING, "");
         CONNECT_setState( clifd, NOTLOGIN );
 		return;
 	}
@@ -368,7 +372,7 @@ void CHAR_createNewChar( int clifd, int dataplacenum, char* charname ,
 										vital,str,tgh,dex,
 										earth,water,fire,wind ) == FALSE )
 	{
-		lssproto_CreateNewChar_send( clifd ,FAILED,
+		lssproto_CreateNewChar_send( clifd ,FAILED_STRING,
 									 "option data is invalid\n");
         CONNECT_setState( clifd, NOTLOGIN );
 		return;
@@ -384,7 +388,7 @@ void CHAR_createNewChar( int clifd, int dataplacenum, char* charname ,
 
 	charaindex =  CHAR_initCharOneArray( &ch );
 	if( charaindex == -1 ) {
-		lssproto_CreateNewChar_send( clifd ,FAILED, "");
+		lssproto_CreateNewChar_send( clifd ,FAILED_STRING, "");
         CONNECT_setState( clifd, NOTLOGIN );
 		return;
 	}
@@ -456,7 +460,7 @@ void CHAR_createNewChar( int clifd, int dataplacenum, char* charname ,
 	petindex = ENEMY_createPetFromEnemyIndex( charaindex, enemyarray);
 	if( !CHAR_CHECKINDEX( petindex )){
 		CHAR_endCharOneArray( charaindex);
-		lssproto_CreateNewChar_send( clifd ,FAILED, "");
+		lssproto_CreateNewChar_send( clifd ,FAILED_STRING, "");
         CONNECT_setState( clifd, NOTLOGIN );
 		return;
 	}
@@ -1743,7 +1747,7 @@ DebugPoint=80;
 #endif
 
 
-	lssproto_CharLogin_send( clifd, SUCCESSFUL,"" );
+	lssproto_CharLogin_send( clifd, SUCCESSFUL_STRING,"" );
 	per = ENCOUNT_getEncountPercentMin( charaindex,
 									CHAR_getInt( charaindex, CHAR_FLOOR),
 									CHAR_getInt( charaindex, CHAR_X),
@@ -1953,7 +1957,7 @@ MAKECHARDATAERROR:
     }
     CONNECT_setState(clifd, WHILECANNOTLOGIN );
     CONNECT_setCharaindex( clifd, -1 );
-	lssproto_CharLogin_send( clifd, FAILED, "Download data ok,but cannot make chara");
+	lssproto_CharLogin_send( clifd, FAILED_STRING, "Download data ok,but cannot make chara");
 }
 
 BOOL CHAR_charSaveFromConnectAndChar( int fd, Char* ch, BOOL unlock )
@@ -2553,7 +2557,7 @@ void CHAR_SkillUp(  int charaindex, int skillid )
 
 INLINE void CHAR_getDXDY( int dir , int* dx, int* dy )
 {
-	static POINT CHAR_dxdy[8]=
+	static POINT_SA CHAR_dxdy[8]=
 	{
 		{ 0,-1},    /*↑*/
 		{ 1,-1},    /*↑→*/
@@ -5697,7 +5701,7 @@ BOOL CHAR_setMyPosition_main( int index, int x, int y, int setdir, BOOL CAFlg)
 	}
 
 	if( ABS( x - prev_x) <= 1 && ABS( y - prev_y ) <= 1){
-		POINT start,end;
+		POINT_SA start,end;
 		int	dir;
 		start.x = CHAR_getInt( index, CHAR_X);
 		start.y = CHAR_getInt( index, CHAR_Y);
@@ -5744,7 +5748,7 @@ BOOL CHAR_setMyPosition_main( int index, int x, int y, int setdir, BOOL CAFlg)
 					int client_x = prevparty_x;
 					int client_y = prevparty_y;
 					int	dir;
-					POINT	start, end;
+					POINT_SA	start, end;
 
 					prevparty_x = CHAR_getInt( toindex, CHAR_X);
 					prevparty_y = CHAR_getInt( toindex, CHAR_Y);

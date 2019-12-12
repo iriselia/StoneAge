@@ -54,7 +54,7 @@ typedef struct tagTITLE_Table
  * GOLD
 */
 typedef struct tagTITLE_Compare {
-	char    compare[8];;
+	char    compare[8];
 } TITLE_COMPARE;
 
 TITLE_COMPARE TITLE_compare[] = { {"<="}, {">="},{"<>"}, {">"},{"<"},{"="}};

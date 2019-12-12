@@ -1,18 +1,23 @@
 #include "version.h"
 #include <sys/types.h>
-#include <sys/socket.h>
-#include <sys/time.h>
 #include <sys/stat.h>
 
+#if PLATFORM_WINDOWS
+#include <WinSock2.h>
+#include "3rdParty/dirent.h"
+#else
+#include <sys/socket.h>
+#include <sys/time.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <unistd.h>
+#include <dirent.h>
+#include <netdb.h>
+#endif
 
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <unistd.h>
-#include <dirent.h>
-#include <netdb.h>
 #include <errno.h>
 #include <string.h>
 #include <ctype.h>
@@ -674,16 +679,16 @@ BOOL strtolchecknum( char* arg , void* number,int base ,CTYPE type)
     num = strtol( arg, &buf, base);
 
     switch( type ){
-    case CHAR:
+    case CHAR_SA:
         *(char*)number = (char)num;
         break;
-    case SHORT:
+    case SHORT_SA:
         *(short*)number = (short)num;
         break;
-    case INT:
+    case INT_SA:
         *(int*)number = num;
         break;
-    case DOUBLE:
+    case DOUBLE_SA:
         *(double*)number = (double)num;
         break;
     default:
@@ -1397,7 +1402,7 @@ BOOL checkStringsUnique( char** strings, int num ,int verbose)
     return TRUE;
 }
 
-BOOL PointInRect( RECT* rect, POINT* p )
+BOOL PointInRect( RECT_SA* rect, POINT_SA* p )
 {
     if( rect->x         <= p->x && p->x <= rect->x + rect->width &&
         rect->y         <= p->y && p->y <= rect->y + rect->height )
@@ -1405,13 +1410,13 @@ BOOL PointInRect( RECT* rect, POINT* p )
     return FALSE;
 }
 
-BOOL CoordinateInRect( RECT* rect, int x, int y)
+BOOL CoordinateInRect( RECT_SA* rect, int x, int y)
 {
-    POINT   p={x,y};
+    POINT_SA   p={x,y};
     return PointInRect(rect,&p);
 }
 
-int clipRect( RECT *rect1, RECT *rect2, RECT *ret )
+int clipRect( RECT_SA *rect1, RECT_SA *rect2, RECT_SA *ret )
 {
     if(   rect1->x > rect2->x + rect2->width -1
        || rect2->x > rect1->x + rect1->width -1

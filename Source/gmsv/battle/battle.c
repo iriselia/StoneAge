@@ -1,3 +1,8 @@
+#if PLATFORM_WINDOWS
+#include <WinSock2.h>
+#else
+#endif
+
 #include "version.h"
 #include<string.h>
 #include<stdlib.h>

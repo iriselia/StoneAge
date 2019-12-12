@@ -274,13 +274,13 @@ INLINE char* PETSKILL_getChar( int index, PETSKILL_DATACHAR element)
 }
 
 /*----------------------------------------------------------------------*/
-INLINE BOOL PETSKILL_setChar( int index ,PETSKILL_DATACHAR element, char* new )
+INLINE BOOL PETSKILL_setChar( int index ,PETSKILL_DATACHAR element, char* input )
 {
     if(!PETSKILL_CHECKINDEX(index))return FALSE;
     if(!PETSKILL_CHECKCHARDATAINDEX(element))return FALSE;
     strcpysafe( PETSKILL_petskill[index].string[element].string,
                 sizeof(PETSKILL_petskill[index].string[element].string),
-                new );
+                input );
     return TRUE;
 }
 /*----------------------------------------------------------------------

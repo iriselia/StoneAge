@@ -266,7 +266,7 @@ BOOL MAP_sendArroundCharNeedFD( int fd,int charaindex )
     int     y=CHAR_getInt(charaindex,CHAR_Y);
     int     fl=CHAR_getInt(charaindex,CHAR_FLOOR);
     int     size=MAP_CHAR_DEFAULTSEESIZ;
-    RECT    seekr,retr;
+    RECT_SA    seekr,retr;
     seekr.x = x - (int)(size/2);
     seekr.y = y - (int)(size/2);
     seekr.width  = size;

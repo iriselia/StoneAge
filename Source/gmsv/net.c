@@ -4,15 +4,21 @@
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
+
+#if PLATFORM_WINDOWS
+#include <WinSock2.h>
+#else
 #include <unistd.h>
 #include <netdb.h>
-#include <sys/types.h>
 #include <sys/socket.h>
-#include <time.h>
 #include <sys/time.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <netinet/tcp.h>     
+#endif
+
+#include <sys/types.h>
+#include <time.h>
 //ttom+1
 #include <sys/timeb.h>
 #include "net.h"
@@ -3353,6 +3359,9 @@ int CHAR_players()
     }
     return players;
 }
+
+#if PLATFORM_WINDOWS
+#else
 void sigusr1(int i)
 {
     signal(SIGUSR1,sigusr1);
@@ -3412,6 +3421,7 @@ void sigusr2(int i)
     lssproto_Shutdown_recv(0, "hogehoge", 5);	// 5分鐘後維修
 #endif
 }
+#endif
 
 // Nuke end
 //ttom start

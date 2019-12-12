@@ -369,7 +369,7 @@ void NPC_AirLoop( int meindex)
  **************************************/
 static void NPC_Air_walk( int meindex)
 {
-	POINT	start, end;
+	POINT_SA	start, end;
 	int dir;
 	int ret;
 	int i;

@@ -1,9 +1,13 @@
 //Terry 2001/09/27
 #include <string.h>
 #include <sys/types.h>
+#if PLATFORM_WINDOWS
+#include <WinSock2.h>
+#else
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#endif
 #include "char.h"
 #include "object.h"
 #include "char_base.h"

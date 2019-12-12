@@ -858,7 +858,7 @@ void CHAR_CHAT_Kusabana( int charaindex, char* message ){
 #if 1
 	{
 		char *stringdata;
-		RECT seekr , retr;
+		RECT_SA seekr , retr;
 		seekr.x = fx;
 		seekr.y = fy;
 		seekr.width = 1;

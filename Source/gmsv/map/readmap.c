@@ -4,9 +4,12 @@
 #include <string.h>
 #include <dirent.h>
 #include <errno.h>
+#if PLATFORM_WINDOWS
+#else
 #include <unistd.h>
-
 #include <netinet/in.h>
+#endif
+
 #include <sys/stat.h>
 
 #include "common.h"
@@ -731,7 +734,7 @@ static char MAP_dataString[STRINGBUFSIZ*3];
 static int MAP_workdatabuffer[MAP_GETMAXSIZE*MAP_GETMAXSIZE];
 #define MAP_DATADELIMITER ","
 
-char* MAP_getdataFromRECT( int floor, RECT* seekr, RECT* realr )
+char* MAP_getdataFromRECT( int floor, RECT_SA* seekr, RECT_SA* realr )
 {
     int floorindex;
     int stringlength=0;
@@ -739,7 +742,7 @@ char* MAP_getdataFromRECT( int floor, RECT* seekr, RECT* realr )
     int i,j;
     int     floorx;
     int databufferindex=0;
-    RECT    scr;
+    RECT_SA    scr;
     char    escapebuffer[128];
 
     floorindex = MAP_getfloorIndex( floor );
@@ -859,14 +862,14 @@ char* MAP_getdataFromRECT( int floor, RECT* seekr, RECT* realr )
     return MAP_dataString;
 }
 
-char *MAP_getChecksumFromRECT( int floor, RECT* seekr, RECT* realr,
+char *MAP_getChecksumFromRECT( int floor, RECT_SA* seekr, RECT_SA* realr,
 								int *tilesum, int *objsum, int *eventsum )
 {
     int floorindex;
     int i,j;
     int     floorx;
     int databufferindex=0;
-    RECT    scr;
+    RECT_SA    scr;
     char    escapebuffer[128];
 	unsigned short	eventbuf[MAP_CHAR_DEFAULTSEESIZ * MAP_CHAR_DEFAULTSEESIZ];
 	unsigned short	tilebuf[ MAP_CHAR_DEFAULTSEESIZ * MAP_CHAR_DEFAULTSEESIZ];
@@ -1395,7 +1398,7 @@ BOOL MAP_setObjData( int ff ,int fx, int fy, int obj, int objhp )
 void MAP_sendAroundMapdata( int fl, int fromx, int fromy)
 {
     char*   mapdata;
-    RECT    seek,ret;
+    RECT_SA    seek,ret;
 	int		i,j;
 	seek.x = fromx;
 	seek.y = fromy;
