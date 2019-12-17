@@ -294,6 +294,8 @@ BOOL TITLE_initTitleName( char* filename )
 		if( line[0] == '\n' )continue;       /* none    */
 		chomp( line );
 
+		utf8ToBig5(line, sizeof(line));
+
 		TITLE_titlenum++;
 	}
 
@@ -330,6 +332,8 @@ BOOL TITLE_initTitleName( char* filename )
 		if( line[0] == '#' )continue;        /* comment */
 		if( line[0] == '\n' )continue;       /* none    */
 		chomp( line );
+
+		utf8ToBig5(line, sizeof(line));
 
 		/*  行を整形する    */
 		/*  まず tab を " " に置き換える    */
@@ -446,6 +450,9 @@ static int TITLE_getConfigOneLine( FILE *fp, char *line, int linelen)
 		linenum ++;
 		if( buf[0] == '#' )continue;        /* comment */
 		if( buf[0] == '\n' )continue;       /* none    */
+
+		utf8ToBig5(line, sizeof(line));
+
 		/*  行を整形する    */
 		/*  まず tab を " " に置き換える    */
 		replaceString( buf, '\t' , ' ' );

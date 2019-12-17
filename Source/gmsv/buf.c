@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <assert.h>
 
 #include "buf.h"
 #include "handletime.h"
@@ -98,6 +99,7 @@ void*   allocateMemory( const unsigned int nbyte )
  
     arrayAllocSize = nbyte/UNIT + ( nbyte%UNIT ? 1 : 0 );
     if( arrayAllocSize == 0 )return NULL;
+	assert(UNITNUMBER >= arrayAllocSize);
 #ifdef DEBUG
     debug( arrayAllocSize , d );
 #endif

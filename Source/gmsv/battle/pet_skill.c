@@ -324,6 +324,9 @@ BOOL PETSKILL_initPetskill( char *filename)
         if( line[0] == '#' )continue;        /* comment */
         if( line[0] == '\n' )continue;       /* none    */
         chomp( line );
+
+		utf8ToBig5(line, sizeof(line));
+
         PETSKILL_petskillnum++;
 #ifdef _PETSKILL_OPTIMUM // Robin 取出最大寵技ID
 		if( getStringFromIndexWithDelim( line, ",", PETSKILL_STARTINTNUM, token, sizeof(token)) == FALSE )
@@ -371,6 +374,8 @@ BOOL PETSKILL_initPetskill( char *filename)
         if( line[0] == '\n' )continue;       /* none    */                        
                 
         chomp( line );
+
+		utf8ToBig5(line, sizeof(line));
 
         /*  行を整形する    */
         /*  まず tab を " " に置き換える    */

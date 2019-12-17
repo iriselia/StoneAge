@@ -4,6 +4,7 @@
 #include <ctype.h>  /* isdigit, isalnum */
 #include "common.h"
 #include "char.h"
+#include "buf.h"
 #include "char_base.h"
 #include "char_data.h"
 #include "configfile.h"
@@ -37,12 +38,12 @@ BOOL ITEM_initContractTable( )
 {
 	//
 	FILE *fp;
-	char data[2048];
+	char data[1024];
 	int i;
 
 	print("\nread contract.txt ....");
 
-    ITEM_contractTbl = (ITEM_contractTable *)allocateMemory( sizeof(struct tagITEM_contract) * MAX_CONTRACTTABLE );
+    ITEM_contractTbl = allocateMemory( sizeof(struct tagITEM_contract) * MAX_CONTRACTTABLE );
 
     if( ITEM_contractTbl == NULL ){
         fprint( "Can't allocate Memory %d\n" ,
@@ -66,8 +67,11 @@ BOOL ITEM_initContractTable( )
 	while(1) {
 		int ret;
 		int index;
-		char token[2048];
+		char token[1024];
 		ret = fgets( data, sizeof(data), fp);
+
+		utf8ToBig5(data, sizeof(data));
+
 		if( ret == NULL || ret == EOF)
 			break;
 

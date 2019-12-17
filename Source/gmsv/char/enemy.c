@@ -275,6 +275,9 @@ BOOL ENEMYTEMP_initEnemy( char* filename )
         if( line[0] == '#' )continue;        /* comment */
         if( line[0] == '\n' )continue;       /* none    */
         chomp( line );
+
+		utf8ToBig5(line, sizeof(line));
+
         replaceString( line, '\t' , ' ' );
 {
         char    buf[256];
@@ -461,6 +464,9 @@ BOOL ENEMY_initEnemy( char* filename )
         if( line[0] == '#' )continue;        /* comment */
         if( line[0] == '\n' )continue;       /* none    */
         chomp( line );
+		
+		utf8ToBig5(line, sizeof(line));
+
         replaceString( line, '\t' , ' ' );
 {
         char    buf[256];
@@ -698,6 +704,8 @@ BOOL GROUP_initGroup( char* filename )
         if( line[0] == '#' )continue;        /* comment */
         if( line[0] == '\n' )continue;       /* none    */
         chomp( line );
+
+		utf8ToBig5(line, sizeof(line));
 
         /*  行を整形する    */
         /*  まず tab を " " に置き換える    */

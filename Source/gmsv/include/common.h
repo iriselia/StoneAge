@@ -21,6 +21,12 @@
 #define fprint(format,arg...) fprintf( stderr, "%s:%d " format , __FILE__ , __LINE__ , ##arg)
 #else
 #define print(...) fprintf (stderr, __VA_ARGS__)
+char __printbuf[512];
+#define printBig5(...) \
+snprintf(__printbuf, 512, __VA_ARGS__); \
+big5ToUtf8(__printbuf, sizeof(__printbuf)); \
+print("%s", __printbuf);
+
 #define fprint(format, ...) fprintf( stderr, "%s:%d " format , __FILE__ , __LINE__ , __VA_ARGS__)
 #endif
 #define debug(x,y) fprintf( stderr, #x " = %" #y "\n" , x)

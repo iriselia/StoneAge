@@ -112,13 +112,15 @@ BOOL MAP_readMapConfFile( char* filename )
         char    imgnum[16];
         BOOL    ret;
         int     imgnumber;
-        deleteSequentChar( line, " \t" );
+
+		deleteSequentChar( line, " \t" );
         pohcd( line, " \t" );
         dchop(line, " \t");
 
         if( line[0] == '#' )continue;
         if( line[0] == '\n' )continue;
         chomp( line );
+
         ret = getStringFromIndexWithDelim( line , " " ,  1 , imgnum , sizeof( imgnum ) );
         if( ret == FALSE )continue;
         imgnumber = atoi(imgnum);
@@ -241,6 +243,8 @@ BOOL MAP_readBattleMapConfFile( char* filename )
         if( line[0] == '#' )continue;
         if( line[0] == '\n' )continue;
         chomp( line );
+
+		utf8ToBig5(line, sizeof(line));
 
 		if( line[0] == '$' ){
 			iRet = sscanf( line+1, "%d %d %d", &iPre[0], &iPre[1], &iPre[2] );

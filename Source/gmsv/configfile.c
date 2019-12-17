@@ -30,7 +30,7 @@
 typedef struct tagConfig
 {
     /*プログラム名(自動的に求めたいけどまだ駄目*/
-    char    progname[8];
+    char    progname[9];
 
     char    configfilename[32]; /* configファイル名 */
     unsigned char debuglevel;   /* デバッグレベル */
@@ -719,6 +719,9 @@ BOOL LoadGMSet( char* filename )
 		char	line[64], cdkey[64], level[64];
 		if (fgets(line, sizeof(line), fp) == NULL)	break;
 		chop(line);
+
+		utf8ToBig5(line, sizeof(line));
+
 		//change 使gmset.txt可以增加註解*******
 		if( line[0] == '#' )
 			continue;
@@ -1671,8 +1674,12 @@ void  defaultConfig( char* argv0 )
     /* デフォルト値を入れる */
 
     /*プログラム名*/
-    program = rindex(argv0, '/');
-    if (program == NULL)
+#if PLATFORM_WINDOWS
+	program = rindex(argv0, '\\');
+#else
+	program = rindex(argv0, '/');
+#endif
+	if (program == NULL)
         program = argv0;
     else
         program++;   /* "/"の次からにしたいので++する*/
@@ -2017,6 +2024,9 @@ BOOL LoadMissionList( )
 		if (fgets(line, sizeof(line), fp) == NULL)	break;
 		print("\n %s ", line);
 		chop(line);
+
+		utf8ToBig5(line, sizeof(line));
+
 		// 以#為註解*******
 		if( line[0] == '#' )
 			continue;
@@ -2235,6 +2245,8 @@ BOOL LoadRacepetfile(void)
 		line[0]='\0';	
 		if (fgets(line, sizeof(line), fp) == NULL)	break;		
 		chop(line);
+
+		utf8ToBig5(line, sizeof(line));
 
 		// #為註解
 		if( line[0] == '#' )

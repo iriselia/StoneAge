@@ -1009,6 +1009,9 @@ BOOL QUIZ_initQuiz( char *filename)
         if( line[0] == '#' )continue;
         if( line[0] == '\n' )continue;
         chomp( line );
+
+		utf8ToBig5(line, sizeof(line));
+
         replaceString( line, '\t' , ' ' );
         for( i = 0; i < strlen( line); i ++) {
             if( line[i] != ' ' ) {

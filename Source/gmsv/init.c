@@ -158,8 +158,11 @@ BOOL init(int argc , char** argv , char** env )
 	char line[256];
 #endif
     srand( getpid());
+
+	SetConsoleOutputCP(CP_UTF8);
+
 #if PLATFORM_WINDOWS
-	print( "This Program is compiled at %s %s by msvc %s\n",
+	print( "This Program is compiled at %s %s by msvc %d\n",
 		__DATE__, __TIME__, _MSC_VER );
 #else
     print( "This Program is compiled at %s %s by gcc %s\n",

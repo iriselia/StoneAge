@@ -285,9 +285,30 @@ int ITEM_initItemIngCache( void )
 }
 #else
 
+void ADD_ICACHE_INGRED(int id, int* count, int name, int value)
+{
+	if (ITEM_tbl[id].itm.string[name].string[0])
+	{
+		icache[id].ingind[*count] = ITEM_getAtomIndexByName(ITEM_tbl[id].itm.string[name].string);
+		if (icache[id].ingind[*count] < 0)
+		{
+			printBig5("fuck ing[%s][%d] for %d %s\n",
+				ITEM_tbl[id].itm.string[name].string,
+				ITEM_tbl[id].itm.data[value],
+				ITEM_tbl[id].itm.data[ITEM_ID],
+				ITEM_tbl[id].itm.string[ITEM_NAME].string);
+		}
+		else
+		{
+			icache[id].ingval[*count] = ITEM_tbl[id].itm.data[value]; (*count)++;
+		}
+	}
+}
+
+
 int ITEM_initItemIngCache( void )
 {
-	int i;
+	int id;
 	print ( "\nITEM_initItemIngCache: tblen:%d ", ITEM_getItemMaxIdNum() );
 	icache_num = ITEM_getItemMaxIdNum( );
 	print(" icache_num:%d \n", icache_num);
@@ -297,46 +318,52 @@ int ITEM_initItemIngCache( void )
 		return FALSE;
 	}
 	remove( "old_icache.txt");
+	FILE* fp;
+	fp = fopen("old_icache.txt", "a+");
+	if (!fp)
+	{
+		print("Can't open old_icache.txt for read write\n");
+		return FALSE;
+	}
+
 	memset( icache, 0, icache_num * sizeof( struct ingcache) );
-	for( i=0; i<icache_num; i++){
-		if( ITEM_tbl[i].use ){ //new
+	for( id=0; id<icache_num; id++){
+		if( ITEM_tbl[id].use ){ //new
 			int k=0;
-#define ADD_ICACHE_INGRED( nm, vl )	if( ITEM_tbl[i].itm.string[nm].string[0] ){icache[i].ingind[k] = ITEM_getAtomIndexByName(ITEM_tbl[i].itm.string[nm].string );if( icache[i].ingind[k] < 0 ){print( "fuck ing[%s][%d] for %d %s\n", ITEM_tbl[i].itm.string[nm].string,ITEM_tbl[i].itm.data[vl], ITEM_tbl[i].itm.data[ITEM_ID], ITEM_tbl[i].itm.string[ITEM_NAME].string );}else {icache[i].ingval[k] = ITEM_tbl[i].itm.data[vl];k++;}}
-			ADD_ICACHE_INGRED( ITEM_INGNAME0, ITEM_INGVALUE0 );
-			ADD_ICACHE_INGRED( ITEM_INGNAME1, ITEM_INGVALUE1 );
-			ADD_ICACHE_INGRED( ITEM_INGNAME2, ITEM_INGVALUE2 );
-			ADD_ICACHE_INGRED( ITEM_INGNAME3, ITEM_INGVALUE3 );
-			ADD_ICACHE_INGRED( ITEM_INGNAME4, ITEM_INGVALUE4 );
-			icache[i].inguse = k;
+
+			ADD_ICACHE_INGRED( id, &k, ITEM_INGNAME0, ITEM_INGVALUE0 );
+			ADD_ICACHE_INGRED( id, &k, ITEM_INGNAME1, ITEM_INGVALUE1 );
+			ADD_ICACHE_INGRED( id, &k, ITEM_INGNAME2, ITEM_INGVALUE2 );
+			ADD_ICACHE_INGRED( id, &k, ITEM_INGNAME3, ITEM_INGVALUE3 );
+			ADD_ICACHE_INGRED( id, &k, ITEM_INGNAME4, ITEM_INGVALUE4 );
+			icache[id].inguse = k;
 
 			if( k == 0 ){
-				if( ITEM_tbl[i].itm.data[ITEM_CANMERGEFROM] == TRUE || //new
-					ITEM_tbl[i].itm.data[ITEM_CANMERGETO] == TRUE){//new
+				if( ITEM_tbl[id].itm.data[ITEM_CANMERGEFROM] == TRUE || //new
+					ITEM_tbl[id].itm.data[ITEM_CANMERGETO] == TRUE){//new
 					print( "ID%d (%s)尚未設定成分\n",
-						   ITEM_tbl[i].itm.data[ITEM_ID], //new
-						   ITEM_tbl[i].itm.string[ITEM_NAME].string ); //new
+						   ITEM_tbl[id].itm.data[ITEM_ID], //new
+						   ITEM_tbl[id].itm.string[ITEM_NAME].string ); //new
 				}
 			}else{
-				FILE *fp;
-				icache[i].use = 1;
-				icache[i].canmergefrom = ITEM_tbl[i].itm.data[ITEM_CANMERGEFROM]; //new
-				icache[i].canmergeto   = ITEM_tbl[i].itm.data[ITEM_CANMERGETO]; //new
+				icache[id].use = 1;
+				icache[id].canmergefrom = ITEM_tbl[id].itm.data[ITEM_CANMERGEFROM]; //new
+				icache[id].canmergeto   = ITEM_tbl[id].itm.data[ITEM_CANMERGETO]; //new
 
-				if( (fp = fopen( "old_icache.txt", "a+")) != NULL ){
-					fprintf( fp, "icache %4d %4d [%s] \t- %s %s %s %s %s\n",
-						i,
-						ITEMTBL_getInt( i, ITEM_ID),
-						ITEMTBL_getChar( i, ITEM_NAME),
-						ITEMTBL_getChar( i, ITEM_INGNAME0),
-						ITEMTBL_getChar( i, ITEM_INGNAME1),
-						ITEMTBL_getChar( i, ITEM_INGNAME2),
-						ITEMTBL_getChar( i, ITEM_INGNAME3),
-						ITEMTBL_getChar( i, ITEM_INGNAME4)	);
-					fclose( fp);
-				}
+				fprintf( fp, "icache %4d %4d [%s] \t- %s %s %s %s %s\n",
+					id,
+					ITEMTBL_getInt( id, ITEM_ID),
+					ITEMTBL_getChar( id, ITEM_NAME),
+					ITEMTBL_getChar( id, ITEM_INGNAME0),
+					ITEMTBL_getChar( id, ITEM_INGNAME1),
+					ITEMTBL_getChar( id, ITEM_INGNAME2),
+					ITEMTBL_getChar( id, ITEM_INGNAME3),
+					ITEMTBL_getChar( id, ITEM_INGNAME4)	);
 			}
 		}
 	}
+	fclose(fp);
+
 	return TRUE;
 }
 #endif
@@ -377,10 +404,12 @@ int ITEM_initItemAtom( char *fn )
 	fseek( fp , 0 , SEEK_SET );
 	count = 0;
 	while(1){
-		char line[16384], tk[1024];
+		char line[256], tk[128];
 		if( fgets( line, sizeof( line ) , fp ) == NULL )break;
 		/* chop */
 		line[strlen(line)-1]=0;
+
+		utf8ToBig5(line, sizeof(line));
 
 		/* 左端に系統の名前が日本語ではいっていて、
 		 それだけが必要 */

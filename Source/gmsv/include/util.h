@@ -64,6 +64,8 @@ void deleteCharFromStringNoEscape( char* src , char* dels );
 #define deleteWhiteSpace( src ) deleteCharFromStringNoEscape( src," \t" )
 char*   replaceString( char* src, char oldc ,char newc );
 
+BOOL	utf8ToBig5(char* str, int size);
+BOOL	big5ToUtf8(char* str, int size);
 char*   escapeStrStr( char* src, char* needle );
 BOOL getStringFromIndexWithDelim_body( char* src ,char* delim ,int index, char* buf , int buflen, char *file, int line );
 #define getStringFromIndexWithDelim( src, delim, index, buf, buflen ) getStringFromIndexWithDelim_body( src, delim, index, buf, buflen, __FILE__, __LINE__ )

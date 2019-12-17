@@ -812,6 +812,44 @@ char*   replaceString( char* src, char oldc ,char newc )
     return src;
 }
 
+BOOL utf8ToBig5(char* str, int size)
+{
+	char temp[2048];
+	// UTF-8 to UTF-16
+	int size_needed = MultiByteToWideChar(CP_UTF8, 0, str, size, NULL, 0);
+	MultiByteToWideChar(CP_UTF8, 0, str, size, temp, size_needed);
+
+	if (size_needed > 1024)
+	{
+		return FALSE;
+	}
+
+	// UTF-16 to Big5(950)
+	int size_needed2 = WideCharToMultiByte(950, 0, temp, size_needed, NULL, 0, NULL, NULL);
+	WideCharToMultiByte(950, 0, temp, size_needed, str, size, NULL, NULL);
+
+	return TRUE;
+}
+
+BOOL big5ToUtf8(char* str, int size)
+{
+	char temp[2048];
+	// UTF-8 to UTF-16
+	int size_needed = MultiByteToWideChar(950, 0, str, size, NULL, 0);
+	MultiByteToWideChar(950, 0, str, size, temp, size_needed);
+
+	if (size_needed > 1024)
+	{
+		return FALSE;
+	}
+
+	// UTF-16 to Big5(950)
+	int size_needed2 = WideCharToMultiByte(CP_UTF8, 0, temp, size_needed, NULL, 0, NULL, NULL);
+	WideCharToMultiByte(CP_UTF8, 0, temp, size_needed, str, size, NULL, NULL);
+
+	return TRUE;
+}
+
 typedef struct tagEscapeChar
 {
     char     escapechar;

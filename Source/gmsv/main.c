@@ -3,6 +3,7 @@
 #include <time.h>
 #include <string.h>
 #include <signal.h>
+#include <assert.h>
 
 #if PLATFORM_WINDOWS
 #else
@@ -85,7 +86,13 @@ int main( int argc , char** argv, char** env )
     LoadAnnounce();	// Arminius 7.12 loginannounce
 
 	/* 初期設定 */
-	memcpy( &tmOld, localtime( (time_t *)&NowTime.tv_sec), sizeof( tmNow ) );
+#if PLATFORM_WINDOWS
+	struct tm* newtime = _localtime32((time_t*)&NowTime.tv_sec);
+#else
+	struct tm* newtime = localtime((time_t*)&NowTime.tv_sec);
+#endif
+	assert(newtime);
+	memcpy( &tmOld, newtime, sizeof( tmNow ) );
 
     EXITWITHEXITCODEIFFALSE( init(argc , argv ,env ) , 1);
 

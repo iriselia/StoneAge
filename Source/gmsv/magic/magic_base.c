@@ -160,6 +160,8 @@ BOOL MAGIC_initMagic( char *filename)
         if( line[0] == '\n' )continue;       /* none    */
         chomp( line );
 
+		utf8ToBig5(line, sizeof(line));
+
 #ifdef _MAGIC_OPTIMUM // Robin 取出最大MAGIC ID
 		if( getStringFromIndexWithDelim( line, ",", MAGIC_DATACHARNUM+MAGIC_ID+1,
 				token, sizeof(token)) == FALSE )
@@ -207,6 +209,8 @@ BOOL MAGIC_initMagic( char *filename)
         if( line[0] == '#' )continue;        /* comment */
         if( line[0] == '\n' )continue;       /* none    */
         chomp( line );
+
+		utf8ToBig5(line, sizeof(line));
 
         /*  行を整形する    */
         /*  まず tab を " " に置き換える    */

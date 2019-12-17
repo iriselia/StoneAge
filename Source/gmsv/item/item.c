@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <assert.h>
 #if PLATFORM_WINDOWS
 #else
 #include <strings.h>
@@ -1036,20 +1037,27 @@ BOOL ITEM_readItemConfFile( char* filename )
 {
 	FILE*   f;
 	char    line[512];
+	char	utf16line[1024];
 	char	token[64];
 	int     linenum=0;
 	int		i;
-	int		maxid=0, itemid;
+	int		maxid=-1, itemid;
 	int		ret;
 	int     intdata[ITEM_DATAINTNUM];
 
+#if PLATFORM_WINDOWS
+	f = fopen(filename, "r");// "rt, ccs=UTF-8");
+#else
 	f = fopen(filename,"r");
+#endif
 	if( f == NULL ){
 		print( "file open error\n");
 		return FALSE;
 	}
 #ifdef _ITEMSET2_ITEM
 
+	//? What this should never be 17
+//#define ITEM_ID_TOKEN_INDEX 17
 #define ITEM_ID_TOKEN_INDEX 17
 
 #else
@@ -1065,12 +1073,15 @@ BOOL ITEM_readItemConfFile( char* filename )
 		if( line[0] == '\n' )continue;       /* none    */
 		chomp( line );
 
+		utf8ToBig5(line, sizeof(line));
+		
 		ret = getStringFromIndexWithDelim( line, ",", ITEM_ID_TOKEN_INDEX, token, sizeof(token));
 		if( ret == FALSE ){
 			fprint("Syntax Error file:%s line:%d\n",filename,linenum);
 			continue;
 		}
 		itemid = atoi( token);
+		//assert(itemid == (maxid + 1));
 		if( itemid > maxid ){
             maxid = itemid;
         }
@@ -1098,7 +1109,7 @@ BOOL ITEM_readItemConfFile( char* filename )
 		ITEM_TransformList[i].use = FALSE;
 	}
 #else
-	print( "ITEM maxid is %d", maxid);
+	print( "ITEM maxid is %d\n", maxid);
 	ITEM_tblen = maxid + 1;
 #endif
 
@@ -1126,6 +1137,9 @@ BOOL ITEM_readItemConfFile( char* filename )
 		if( line[0] == '#' )continue;        /* comment */
 		if( line[0] == '\n' )continue;       /* none    */
 		chomp( line );
+
+		utf8ToBig5(line, sizeof(line));
+
 		replaceString( line, '\t' , ' ' );
 
 {
@@ -1153,7 +1167,8 @@ BOOL ITEM_readItemConfFile( char* filename )
 			intdata[i] = 0;
 		}
 		itemid = 0;
-		for( i = 0 ; i < arraysizeof( ITEM_itemconfentries) ; i ++ ){
+		for( i = 0 ; i < arraysizeof( ITEM_itemconfentries) ; i ++ )
+		{
 			ret = getStringFromIndexWithDelim( line,",",readpos,token, sizeof(token));
 			if( ret == FALSE ) {
 #ifdef _Item_ReLifeAct
@@ -1194,8 +1209,10 @@ BOOL ITEM_readItemConfFile( char* filename )
 					itm.data[ITEM_itemconfentries[i].index]
 								= intfunction(line,
 									  		&intdata[ITEM_itemconfentries[i].index],readpos);
-					if( intfunction == ITEM_getRandomValue) readpos ++;
-
+					if (intfunction == ITEM_getRandomValue)
+					{
+						readpos++;
+					}
 				  }
 					break;
 				  case ITEM_CHARFUNC:

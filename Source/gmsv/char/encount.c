@@ -128,6 +128,8 @@ BOOL ENCOUNT_initEncount( char* filename )
         if( line[0] == '\n' )continue;       /* none    */
         chomp( line );
 
+		utf8ToBig5(line, sizeof(line));
+
         /*  行を整形する    */
         /*  まず tab を " " に置き換える    */
         replaceString( line, '\t' , ' ' );

@@ -428,6 +428,8 @@ BOOL CHAR_initInvinciblePlace( char* filename )
         if( line[0] == '\n' )continue;       /* none    */
         chomp( line );
 
+		utf8ToBig5(line, sizeof(line));
+
         CHAR_invareanum++;
     }
 
@@ -467,6 +469,9 @@ BOOL CHAR_initInvinciblePlace( char* filename )
         if( line[0] == '#' )continue;        /* comment */
         if( line[0] == '\n' )continue;       /* none    */
         chomp( line );
+
+		utf8ToBig5(line, sizeof(line));
+
         replaceString( line, '\t' , ' ' );
         deleteSequentChar( line, " " );
         if( line[0] == ' ' )continue;
@@ -659,6 +664,9 @@ BOOL CHAR_initAppearPosition( char* filename )
         if( line[0] == '#' )continue;        /* comment */
         if( line[0] == '\n' )continue;       /* none    */
         chomp( line );
+
+		utf8ToBig5(line, sizeof(line));
+
         replaceString( line, '\t' , ' ' );
         deleteSequentChar( line, " " );
         if( line[0] == ' ' )continue;

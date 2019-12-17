@@ -135,6 +135,9 @@ BOOL PROFESSION_initSkill( char *filename)
         if( line[0] == '#' )continue;
         if( line[0] == '\n' )continue;
         chomp( line );
+
+		utf8ToBig5(line, sizeof(line));
+
         profession_skill_num++;
 #ifdef _PROSKILL_OPTIMUM // Robin 取出最大職技ID
 		if( getStringFromIndexWithDelim( line, ",", 
@@ -181,6 +184,8 @@ BOOL PROFESSION_initSkill( char *filename)
         if( line[0] == '\n' )continue;             
                 
         chomp( line );
+
+		utf8ToBig5(line, sizeof(line));
 
         replaceString( line, '\t' , ' ' );
 
