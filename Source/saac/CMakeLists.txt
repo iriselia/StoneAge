@@ -3,8 +3,11 @@ _CRT_SECURE_NO_WARNINGS
 _SASQL
 )
 SET( INCLUDE
+mysql
 )
 SET( LINK
+mysql
+3rdParty/mysql/lib/libmysql.lib
 Ws2_32.lib
 )
 create_project(CONSOLE DEFINE INCLUDE LINK)
